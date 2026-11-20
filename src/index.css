@@ -14,3 +14,6 @@
 @import url("./assets/css/projects.css");
 @import url("./assets/css/experience.css");
 @import url("./assets/css/contact.css");
+
+/* 공통 상호작용 */
+@import url("./assets/css/interactions.css");

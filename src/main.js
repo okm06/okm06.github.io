@@ -6,6 +6,7 @@ const toggle = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('.nav-links');
 const heroName = document.querySelector('.hero-name');
 const skillItems = [...document.querySelectorAll('.skill-item')];
+const backToTop = document.querySelector('.back-to-top');
 let smoothScroll = null;
 let cleanupMotion = () => {};
 
@@ -41,6 +42,72 @@ mobileMenu.addEventListener('change', () => setMenu(false));
 setMenu(false);
 document.documentElement.classList.add('has-js');
 
+backToTop.addEventListener('click', () => {
+  document.querySelector('#main').focus({ preventScroll: true });
+  if (smoothScroll) smoothScroll.scrollTo(0, { immediate: reducedMotion.matches });
+  else window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+});
+
+// 복사에 성공한 경우에만 완료 상태를 표시합니다.
+const copyEmailButton = document.querySelector('.contact-copy');
+const copyEmailStatus = document.querySelector('.contact-copy-status');
+const emailLink = document.querySelector('.contact-email');
+let copyEmailResetTimer;
+let copyingEmail = false;
+
+function copyEmailFallback(address) {
+  const previousFocus = document.activeElement;
+  const field = document.createElement('textarea');
+  field.value = address;
+  field.readOnly = true;
+  field.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px';
+  document.body.append(field);
+  try {
+    field.focus({ preventScroll: true });
+    field.select();
+    field.setSelectionRange(0, address.length);
+    return document.execCommand('copy');
+  } finally {
+    field.remove();
+    previousFocus?.focus({ preventScroll: true });
+  }
+}
+
+copyEmailButton.addEventListener('click', async () => {
+  if (copyingEmail) return;
+  copyingEmail = true;
+  clearTimeout(copyEmailResetTimer);
+  copyEmailButton.setAttribute('aria-busy', 'true');
+  copyEmailStatus.textContent = '';
+  const address = emailLink.getAttribute('href').slice('mailto:'.length);
+  try {
+    let copied = false;
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(address);
+        copied = true;
+      } catch {
+        // 로컬 파일이나 클립보드 권한이 제한된 브라우저의 대체 방식입니다.
+      }
+    }
+    if (!copied) copied = copyEmailFallback(address);
+    if (!copied) throw new Error('Copy unavailable');
+    copyEmailButton.textContent = '복사했어요';
+    copyEmailStatus.textContent = '이메일 주소를 복사했어요.';
+  } catch {
+    copyEmailButton.textContent = '다시 복사';
+    copyEmailStatus.textContent = '복사하지 못했어요. 이메일 주소를 직접 복사해주세요.';
+  } finally {
+    copyingEmail = false;
+    copyEmailButton.removeAttribute('aria-busy');
+  }
+  copyEmailResetTimer = setTimeout(() => {
+    copyEmailButton.textContent = '복사';
+    copyEmailStatus.textContent = '';
+  }, 3500);
+});
+copyEmailButton.hidden = false;
+
 // 긴 섹션에서도 현재 위치를 유지하며, 첫 화면에서는 메뉴를 선택하지 않습니다.
 const sectionLinks = [...navLinks.querySelectorAll('a[href^="#"]')].map((link) => ({
   link,
@@ -50,6 +117,12 @@ let activeSectionLink = null;
 let sectionUpdatePending = false;
 
 function updateActiveSection() {
+  // 임계값에 여유를 두어 상단 근처에서 높이가 반복해서 바뀌지 않게 합니다.
+  if (window.scrollY > 80) nav.classList.add('nav--compact');
+  else if (window.scrollY < 24) nav.classList.remove('nav--compact');
+  const showBackToTop = window.scrollY > Math.max(400, window.innerHeight * 0.6);
+  backToTop.classList.toggle('is-visible', showBackToTop);
+  backToTop.inert = !showBackToTop;
   const activationLine = Math.min(window.innerHeight * 0.3, nav.getBoundingClientRect().height + 96);
   let current = null;
   sectionLinks.forEach(({ link, section }) => {
@@ -109,12 +182,61 @@ function refreshScrollPositions() {
   scheduleSectionUpdate();
 }
 
+// 닫힐 때도 open 상태를 유지해 내용이 사라지기 전에 높이를 줄입니다.
+const detailTransitions = new Map();
 projectGrid.querySelectorAll('.project-details').forEach((details) => {
+  const summary = details.querySelector('summary');
+  let animation = null;
+  let expanded = details.open;
+
+  const finish = () => {
+    if (!animation) return;
+    animation.onfinish = null;
+    animation.cancel();
+    animation = null;
+    details.open = expanded;
+    details.style.removeProperty('height');
+    details.style.removeProperty('overflow');
+    details.classList.remove('is-closing');
+    alignProjectCards();
+    refreshScrollPositions();
+  };
+  detailTransitions.set(details, finish);
+
+  summary.addEventListener('click', (event) => {
+    if (reducedMotion.matches || !details.animate) return;
+    event.preventDefault();
+    const fromHeight = details.getBoundingClientRect().height;
+    expanded = animation ? !expanded : !details.open;
+    if (animation) {
+      animation.onfinish = null;
+      animation.cancel();
+    }
+    details.open = true;
+    details.style.removeProperty('height');
+    const toHeight = expanded
+      ? details.getBoundingClientRect().height
+      : summary.getBoundingClientRect().height + parseFloat(getComputedStyle(details).borderTopWidth);
+    details.classList.toggle('is-closing', !expanded);
+    details.style.overflow = 'hidden';
+    animation = details.animate([
+      { height: `${fromHeight}px` },
+      { height: `${toHeight}px` },
+    ], { duration: 240, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)', fill: 'both' });
+    animation.onfinish = finish;
+  });
   details.addEventListener('toggle', () => {
+    if (animation) return;
+    expanded = details.open;
     alignProjectCards();
     refreshScrollPositions();
   });
 });
+function finishDetailTransitions() {
+  detailTransitions.forEach((finish) => finish());
+}
+window.addEventListener('resize', finishDetailTransitions);
+reducedMotion.addEventListener('change', finishDetailTransitions);
 let projectGridWidth = -1;
 if ('ResizeObserver' in window) {
   new ResizeObserver(([entry]) => {
@@ -177,10 +299,15 @@ function configureMotion() {
         [
           ['.skills', '.skills-title', '.skill-card'],
           ['.projects', '.projects-title', '.project-item'],
-          ['.experience', '.experience-title', '.experience-item'],
+          ['.experience', '.experience-title', '.experience-date, .experience-content'],
           ['.contact', '.contact-title', '.contact-content'],
         ].forEach(([section, title, content]) => {
-          gsap.from(`${title}, ${section} ${content}`, {
+          gsap.from(`${title} .section-title-text`, {
+            yPercent: 110, rotation: 2, transformOrigin: 'left bottom',
+            duration: 1.05, ease: 'power4.out', clearProps: 'transform',
+            scrollTrigger: { trigger: title, start: 'top 90%', once: true },
+          });
+          gsap.from(document.querySelector(section).querySelectorAll(content), {
             opacity: 0, y: 30, duration: 0.7, stagger: 0.1,
             ease: 'power3.out', clearProps: 'opacity,transform',
             scrollTrigger: { trigger: section, start: 'top 85%', once: true },
@@ -188,7 +315,86 @@ function configureMotion() {
         });
       }
 
+      if (scrollTrigger) {
+        const timeline = document.querySelector('.experience-timeline');
+        const milestones = [...timeline.querySelectorAll('.experience-item')];
+        timeline.classList.add('is-scroll-timeline');
+        const updateMilestones = () => {
+          const activationLine = window.innerHeight * 0.65;
+          milestones.forEach((item) => {
+            const marker = getComputedStyle(item, '::before');
+            const markerCenter = parseFloat(marker.top) + parseFloat(marker.height) / 2;
+            item.classList.toggle('is-reached',
+              item.getBoundingClientRect().top + markerCenter <= activationLine);
+          });
+        };
+        gsap.fromTo(timeline, { '--timeline-progress': 0 }, {
+          '--timeline-progress': 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: timeline,
+            start: 'top 65%', end: 'bottom 65%',
+            scrub: true,
+            onUpdate: updateMilestones,
+            onRefresh: updateMilestones,
+          },
+        });
+        updateMilestones();
+        cleanups.push(() => {
+          timeline.classList.remove('is-scroll-timeline');
+          milestones.forEach((item) => item.classList.remove('is-reached'));
+        });
+      }
+
       if (finePointer.matches) {
+        const cursor = document.createElement('div');
+        cursor.className = 'project-cursor';
+        cursor.setAttribute('aria-hidden', 'true');
+        cursor.innerHTML = '<span class="project-cursor-label">VIEW <span>↗</span></span>';
+        document.body.append(cursor);
+        let pointerPosition = null;
+        const hideCursor = () => {
+          cursor.classList.remove('is-visible');
+          document.body.classList.remove('has-project-cursor');
+        };
+        const updateCursor = () => {
+          if (!pointerPosition) return;
+          const { x, y } = pointerPosition;
+          const target = document.elementFromPoint(x, y);
+          if (!target?.closest('.project-preview')) {
+            hideCursor();
+            return;
+          }
+          // 실제 포인터 위치에 지연 없이 표시합니다.
+          cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+          cursor.classList.add('is-visible');
+          document.body.classList.add('has-project-cursor');
+        };
+        const followCursor = (event) => {
+          if (event.pointerType !== 'mouse') return;
+          pointerPosition = { x: event.clientX, y: event.clientY };
+          updateCursor();
+        };
+        const resetCursor = () => {
+          pointerPosition = null;
+          hideCursor();
+        };
+        document.addEventListener('pointerover', followCursor);
+        document.addEventListener('pointermove', followCursor);
+        document.addEventListener('pointerleave', resetCursor);
+        window.addEventListener('blur', resetCursor);
+        window.addEventListener('scroll', updateCursor, { passive: true });
+        document.addEventListener('keydown', resetCursor);
+        cleanups.push(() => {
+          document.removeEventListener('pointerover', followCursor);
+          document.removeEventListener('pointermove', followCursor);
+          document.removeEventListener('pointerleave', resetCursor);
+          window.removeEventListener('blur', resetCursor);
+          window.removeEventListener('scroll', updateCursor);
+          document.removeEventListener('keydown', resetCursor);
+          resetCursor();
+          cursor.remove();
+        });
         const hero = document.querySelector('.hero');
         gsap.set(heroName, { transformPerspective: 1000 });
         const rotateY = gsap.quickTo(heroName, 'rotationY', { duration: 0.8, ease: 'power2.out' });

@@ -93,3 +93,15 @@ body::before {
     transform: none !important;
   }
 }
+
+/* 제목의 행간을 유지한 채 글자만 아래에서 드러냅니다. */
+.skills-title,
+.projects-title,
+.experience-title,
+.contact-title {
+  overflow: clip;
+}
+
+.section-title-text {
+  display: inline-block;
+}

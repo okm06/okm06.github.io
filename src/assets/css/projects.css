@@ -190,11 +190,6 @@
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.project-link:hover {
-  background: var(--bg);
-  border-color: var(--accent);
-}
-
 .project-link-note {
   color: var(--text-secondary);
   font-size: 0.75rem;
@@ -234,4 +229,54 @@
   .project-link {
     transition: none;
   }
+}
+
+.project-preview:focus-visible {
+  outline-offset: -6px;
+  z-index: 1;
+}
+
+.project-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.project-cursor-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 84px;
+  height: 84px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(48, 59, 50, 0.88);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.project-cursor.is-visible {
+  visibility: visible;
+}
+
+.project-cursor.is-visible .project-cursor-label {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .has-project-cursor .project-preview { cursor: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-cursor { display: none; }
 }

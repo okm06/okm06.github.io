@@ -122,3 +122,29 @@
     padding-bottom: 2rem;
   }
 }
+
+/* 기본 트랙 위로 스크롤 진행선이 채워집니다. */
+.experience-timeline.is-scroll-timeline::after {
+  content: "";
+  position: absolute;
+  top: 0.6rem;
+  bottom: 0;
+  left: 0.3rem;
+  width: 1px;
+  background: var(--accent);
+  transform: scaleY(var(--timeline-progress, 0));
+  transform-origin: top;
+  pointer-events: none;
+}
+
+.is-scroll-timeline .experience-item::before {
+  z-index: 1;
+  border-color: var(--border);
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.24s ease;
+}
+
+.is-scroll-timeline .experience-item.is-reached::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 5px rgba(48, 59, 50, 0.09);
+}

@@ -13,7 +13,10 @@
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:site_name" content="오경민 포트폴리오" />
     <meta property="og:title" content="오경민 | Frontend Developer" />
-    <meta property="og:description" content="HTML, CSS, JavaScript와 GSAP으로 구현한 화면과 인터랙션. 오경민의 프로젝트와 퍼블리싱 경험을 소개합니다." />
+    <meta
+      property="og:description"
+      content="HTML, CSS, JavaScript와 GSAP으로 구현한 화면과 인터랙션. 오경민의 프로젝트와 퍼블리싱 경험을 소개합니다."
+    />
     <meta property="og:url" content="https://okm06.github.io/" />
     <meta property="og:image" content="https://okm06.github.io/images/og-image.png" />
     <meta property="og:image:width" content="1200" />
@@ -22,7 +25,10 @@
     <meta property="og:image:alt" content="오경민 포트폴리오 — 화면과 인터랙션을 구현합니다" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="오경민 | Frontend Developer" />
-    <meta name="twitter:description" content="HTML, CSS, JavaScript와 GSAP으로 구현한 프로젝트와 퍼블리싱 경험" />
+    <meta
+      name="twitter:description"
+      content="HTML, CSS, JavaScript와 GSAP으로 구현한 프로젝트와 퍼블리싱 경험"
+    />
     <meta name="twitter:image" content="https://okm06.github.io/images/og-image.png" />
     <meta name="twitter:image:alt" content="오경민 포트폴리오 — 화면과 인터랙션을 구현합니다" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
@@ -71,10 +77,10 @@
           </h1>
           <div class="hero-summary">
             <p class="hero-intro">
-              작은 디테일을 다듬어,<br />자연스럽게 사용할 수 있는 웹을 만듭니다.
+              화면을 정교하게,<br />움직임을 자연스럽게.
             </p>
             <p class="hero-desc">
-              HTML, CSS, JavaScript를 기반으로<br />화면과 인터랙션을 구현하는 오경민입니다.
+              웹·앱 UI와 스크롤 인터랙션을<br />구현하는 오경민입니다.
             </p>
             <div class="hero-actions">
               <a class="hero-button hero-button--primary" href="#projects"
@@ -90,7 +96,7 @@
       </section>
       <section class="skills" id="skills" aria-labelledby="skills-title">
         <div class="skills-inner">
-          <h2 class="skills-title" id="skills-title">Skills</h2>
+          <h2 class="skills-title" id="skills-title"><span class="section-title-text">Skills</span></h2>
           <div class="skills-grid">
             <article class="skill-card skill-card--frontend" aria-labelledby="skill-frontend">
               <div class="skill-card-heading">
@@ -127,8 +133,16 @@
                 </li>
               </ul>
               <dl class="skill-experience">
-                <div><dt>화면 구현</dt><dd>HTML, CSS, JavaScript, jQuery를 활용한 웹·앱 UI 퍼블리싱과 운영 화면 유지보수</dd></div>
-                <div><dt>인터랙션</dt><dd>GSAP ScrollTrigger와 Canvas를 활용한 스크롤 연동 이미지 시퀀스 구현</dd></div>
+                <div>
+                  <dt>화면 구현</dt>
+                  <dd>
+                    HTML, CSS, JavaScript, jQuery를 활용한 웹·앱 UI 퍼블리싱과 운영 화면 유지보수
+                  </dd>
+                </div>
+                <div>
+                  <dt>인터랙션</dt>
+                  <dd>GSAP ScrollTrigger와 Canvas를 활용한 스크롤 연동 이미지 시퀀스 구현</dd>
+                </div>
               </dl>
             </article>
             <article class="skill-card skill-card--design" aria-labelledby="skill-design">
@@ -150,8 +164,14 @@
                 </li>
               </ul>
               <dl class="skill-experience">
-                <div><dt>디자인 학습</dt><dd>교육 과정에서 Photoshop과 Figma를 활용한 UI/UX 디자인 학습</dd></div>
-                <div><dt>시안 구현</dt><dd>Figma로 전달받은 시안을 확인하고 HTML, CSS, JavaScript로 화면 구현</dd></div>
+                <div>
+                  <dt>디자인 학습</dt>
+                  <dd>교육 과정에서 Photoshop과 Figma를 활용한 UI/UX 디자인 학습</dd>
+                </div>
+                <div>
+                  <dt>시안 구현</dt>
+                  <dd>Figma로 전달받은 시안을 확인하고 HTML, CSS, JavaScript로 화면 구현</dd>
+                </div>
               </dl>
             </article>
             <article class="skill-card skill-card--backend" aria-labelledby="skill-backend">
@@ -168,13 +188,20 @@
                   <span> Spring Boot </span>
                   <em> 학습중 </em>
                 </li>
-                <li class="skill-item">
-                  <span class="skill-text-icon" aria-hidden="true">TH</span>
+                <li class="skill-item skill-item--learning">
+                  <img src="./src/assets/icons/thymeleaf.png" alt="" aria-hidden="true" class="skill-svg-icon" width="24" height="24" />
                   <span>Thymeleaf</span>
+                  <em>학습중</em>
                 </li>
               </ul>
               <dl class="skill-experience">
-                <div><dt>템플릿 수정</dt><dd>Spring Boot 기반 프로젝트에서 백엔드 개발자와 협업하며 Thymeleaf 템플릿과 일부 Java 코드 수정</dd></div>
+                <div>
+                  <dt>템플릿 수정</dt>
+                  <dd>
+                    Spring Boot 기반 프로젝트에서 백엔드 개발자와 협업하며 Thymeleaf 템플릿과 일부
+                    Java 코드 수정
+                  </dd>
+                </div>
               </dl>
             </article>
             <article class="skill-card skill-card--tools" aria-labelledby="skill-tools">
@@ -208,8 +235,14 @@
                 </li>
               </ul>
               <dl class="skill-experience">
-                <div><dt>버전 관리</dt><dd>Git을 활용해 협업 소스를 내려받고 수정 사항 관리</dd></div>
-                <div><dt>AI 활용</dt><dd>낯선 인터랙션과 코드 이해에 도움을 받고, 실행 결과를 확인하며 수정</dd></div>
+                <div>
+                  <dt>버전 관리</dt>
+                  <dd>Git을 활용해 협업 소스를 내려받고 수정 사항 관리</dd>
+                </div>
+                <div>
+                  <dt>AI 활용</dt>
+                  <dd>낯선 인터랙션과 코드 이해에 도움을 받고, 실행 결과를 확인하며 수정</dd>
+                </div>
               </dl>
             </article>
           </div>
@@ -217,10 +250,10 @@
       </section>
       <section class="projects" id="projects" aria-labelledby="projects-title">
         <div class="projects-inner">
-          <h2 class="projects-title" id="projects-title">Projects</h2>
+          <h2 class="projects-title" id="projects-title"><span class="section-title-text">Projects</span></h2>
           <div class="projects-grid">
             <article class="project-item" aria-labelledby="project-01">
-              <div class="project-preview">
+              <a class="project-preview" href="http://3.34.165.36:8080/" target="_blank" rel="noopener noreferrer" aria-label="제이월드 사이트 보기 (새 탭)">
                 <img
                   src="./images/jworld.webp"
                   alt="제이월드 홈페이지 메인 화면"
@@ -229,7 +262,7 @@
                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </a>
               <div class="project-info">
                 <div class="project-heading">
                   <h3 class="project-name" id="project-01">제이월드</h3>
@@ -246,7 +279,14 @@
                 <details class="project-details">
                   <summary>작업 내용 <span aria-hidden="true">+</span></summary>
                   <div class="project-details-content">
-                    <p>제품이 회전하는 듯한 화면을 스크롤 위치에 맞춰 보여주는 것을 목표로, 화면 퍼블리싱과 인터랙션 구현을 전담했습니다. GSAP ScrollTrigger로 스크롤 진행률을 제어하고 HTML5 Canvas에 해당 이미지 프레임을 그리는 방식으로 구현했습니다. 여러 이미지 프레임을 다루는 점을 고려해 WebP 변환과 프레임 수 조절, 이미지 프리로딩과 메모리 관리 방식을 적용했습니다. PC와 모바일은 이미지 프레임을 구분해 각 환경에 맞춰 대응했습니다.</p>
+                    <p>
+                      제품이 회전하는 듯한 화면을 스크롤 위치에 맞춰 보여주는 것을 목표로, 화면
+                      퍼블리싱과 인터랙션 구현을 전담했습니다. GSAP ScrollTrigger로 스크롤 진행률을
+                      제어하고 HTML5 Canvas에 해당 이미지 프레임을 그리는 방식으로 구현했습니다.
+                      여러 이미지 프레임을 다루는 점을 고려해 WebP 변환과 프레임 수 조절, 이미지
+                      프리로딩과 메모리 관리 방식을 적용했습니다. PC와 모바일은 이미지 프레임을
+                      구분해 각 환경에 맞춰 대응했습니다.
+                    </p>
                   </div>
                 </details>
                 <div class="project-footer">
@@ -264,7 +304,7 @@
               </div>
             </article>
             <article class="project-item" aria-labelledby="project-02">
-              <div class="project-preview">
+              <a class="project-preview" href="https://teemogolf.com/" target="_blank" rel="noopener noreferrer" aria-label="TEEMO Golf 사이트 보기 (새 탭)">
                 <img
                   src="./images/teemo.webp"
                   alt="TEEMO Golf 홈페이지 메인 화면"
@@ -273,7 +313,7 @@
                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </a>
               <div class="project-info">
                 <div class="project-heading">
                   <h3 class="project-name" id="project-02">TEEMO Golf</h3>
@@ -311,7 +351,7 @@
               </div>
             </article>
             <article class="project-item" aria-labelledby="project-03">
-              <div class="project-preview">
+              <a class="project-preview" href="https://play.google.com/store/apps/details?id=com.evernet_.evernet&amp;hl=ko" target="_blank" rel="noopener noreferrer" aria-label="ONETOP Google Play 앱 소개 보기 (새 탭)">
                 <img
                   src="./images/onetop.webp"
                   alt="ONETOP 앱 마이페이지와 상품 목록 화면"
@@ -320,7 +360,7 @@
                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </a>
               <div class="project-info">
                 <div class="project-heading">
                   <h3 class="project-name" id="project-03">ONETOP</h3>
@@ -362,7 +402,7 @@
               </div>
             </article>
             <article class="project-item" aria-labelledby="project-04">
-              <div class="project-preview">
+              <a class="project-preview" href="https://yozm.co.kr/article/이벤트/8/30353/" target="_blank" rel="noopener noreferrer" aria-label="YOZM 종료된 이벤트 공식 게시물 보기 (새 탭)">
                 <img
                   src="./images/yozm.webp"
                   alt="YOZM 그릭요거트 이벤트 페이지 메인 화면"
@@ -371,7 +411,7 @@
                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </a>
               <div class="project-info">
                 <div class="project-heading">
                   <h3 class="project-name" id="project-04">YOZM 그릭요거트 이벤트 페이지</h3>
@@ -409,7 +449,7 @@
               </div>
             </article>
             <article class="project-item" aria-labelledby="project-05">
-              <div class="project-preview">
+              <a class="project-preview" href="./projects/five-dalant/index.html" target="_blank" rel="noopener noreferrer" aria-label="다섯달란트 홈페이지 리뉴얼 퍼블리싱 데모 보기 (새 탭)">
                 <img
                   src="./images/five-dalant.webp"
                   alt="다섯달란트 리뉴얼 홈페이지 메인 화면"
@@ -418,7 +458,7 @@
                   loading="lazy"
                   decoding="async"
                 />
-              </div>
+              </a>
               <div class="project-info">
                 <div class="project-heading">
                   <h3 class="project-name" id="project-05">홈페이지 리뉴얼</h3>
@@ -460,7 +500,7 @@
       </section>
       <section class="experience" id="experience" aria-labelledby="experience-title">
         <div class="experience-inner">
-          <h2 class="experience-title" id="experience-title">Experience</h2>
+          <h2 class="experience-title" id="experience-title"><span class="section-title-text">Experience</span></h2>
           <ol class="experience-timeline">
             <li class="experience-item">
               <p class="experience-date">
@@ -499,18 +539,28 @@
       </section>
       <section class="contact" id="contact" aria-labelledby="contact-title">
         <div class="contact-inner">
-          <h2 class="contact-title" id="contact-title">Contact</h2>
+          <h2 class="contact-title" id="contact-title"><span class="section-title-text">Contact</span></h2>
           <div class="contact-content">
-            <p class="contact-sub">같이 일하고 싶으시다면 언제든지 연락주세요.</p>
+            <h3 class="contact-invite">
+              <a class="contact-invite-link" href="mailto:aokm1203@naver.com" aria-label="함께 만들어요 — 오경민에게 이메일 보내기">
+                <span class="contact-invite-text"><span>함께</span> <span>만들어요</span></span>
+                <span class="contact-invite-arrow" aria-hidden="true">↗</span>
+              </a>
+            </h3>
+            <div class="contact-intro">
+              <p class="contact-sub">작은 디테일부터 자연스러운 인터랙션까지.<br />함께 만들고 싶은 웹이 있다면 연락해주세요.</p>
+              <div class="contact-email-group">
+                <div class="contact-email-actions">
+                  <a class="contact-email" href="mailto:aokm1203@naver.com">aokm1203@naver.com <span aria-hidden="true">↗</span></a>
+                  <button class="contact-copy" type="button" aria-label="이메일 주소 복사" hidden>복사</button>
+                </div>
+                <p class="contact-copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+              </div>
+            </div>
             <div class="contact-links">
               <a class="contact-link" href="tel:010-2488-7314">
                 <span class="contact-link-label"> Phone </span>
                 <span class="contact-link-value"> 010-2488-7314 </span>
-                <span class="contact-arrow"> ↗ </span>
-              </a>
-              <a class="contact-link" href="mailto:aokm1203@naver.com">
-                <span class="contact-link-label"> Email </span>
-                <span class="contact-link-value"> aokm1203@naver.com </span>
                 <span class="contact-arrow"> ↗ </span>
               </a>
               <a
@@ -531,6 +581,9 @@
         </p>
       </section>
     </main>
+    <button class="back-to-top" type="button" aria-label="맨 위로 이동" inert>
+      <span aria-hidden="true">↑</span>
+    </button>
     <script defer src="./src/assets/vendor/gsap.min.js"></script>
     <script defer src="./src/assets/vendor/ScrollTrigger.min.js"></script>
     <script defer src="./src/assets/vendor/lenis.min.js"></script>

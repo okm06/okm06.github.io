@@ -8,17 +8,24 @@
   align-items: center;
   position: relative;
   isolation: isolate;
+  overflow: clip;
 }
 
 .hero::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -12%;
   z-index: -1;
   pointer-events: none;
   background:
     radial-gradient(ellipse 55% 55% at 74% 40%, rgba(170, 190, 160, 0.3), transparent 75%),
     radial-gradient(ellipse 40% 35% at 15% 70%, rgba(210, 220, 196, 0.25), transparent 75%);
+  animation: hero-light-drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes hero-light-drift {
+  from { transform: translate3d(-3%, 1%, 0) scale(1); }
+  to { transform: translate3d(4%, -3%, 0) scale(1.08); }
 }
 
 .hero-inner {
@@ -98,19 +105,9 @@
   color: var(--surface);
 }
 
-.hero-button--primary:hover {
-  background: var(--text-primary);
-  border-color: var(--text-primary);
-}
-
 .hero-button--secondary {
   border-color: var(--border);
   color: var(--text-primary);
-}
-
-.hero-button--secondary:hover {
-  background: var(--surface);
-  border-color: var(--accent);
 }
 
 .hero-scroll {
