@@ -7,13 +7,35 @@
       name="description"
       content="프론트엔드 개발자 오경민의 포트폴리오. HTML, CSS, JavaScript로 만드는 웹과 인터랙션을 소개합니다."
     />
+    <meta name="theme-color" content="#faf9f6" />
+    <link rel="canonical" href="https://okm06.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="오경민 포트폴리오" />
+    <meta property="og:title" content="오경민 | Frontend Developer" />
+    <meta property="og:description" content="HTML, CSS, JavaScript와 GSAP으로 구현한 화면과 인터랙션. 오경민의 프로젝트와 퍼블리싱 경험을 소개합니다." />
+    <meta property="og:url" content="https://okm06.github.io/" />
+    <meta property="og:image" content="https://okm06.github.io/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="오경민 포트폴리오 — 화면과 인터랙션을 구현합니다" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="오경민 | Frontend Developer" />
+    <meta name="twitter:description" content="HTML, CSS, JavaScript와 GSAP으로 구현한 프로젝트와 퍼블리싱 경험" />
+    <meta name="twitter:image" content="https://okm06.github.io/images/og-image.png" />
+    <meta name="twitter:image:alt" content="오경민 포트폴리오 — 화면과 인터랙션을 구현합니다" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="./images/apple-touch-icon.png" />
     <link rel="stylesheet" href="./src/index.css" />
     <title>오경민 | Frontend Developer</title>
   </head>
   <body>
-    <main>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <main id="main" tabindex="-1">
       <nav class="nav" aria-label="주 메뉴">
-        <span class="nav-logo"><a href="/index.html">OKM</a> </span>
+        <span class="nav-logo"><a href="./index.html">OKM</a> </span>
         <button
           class="nav-toggle"
           type="button"
@@ -95,7 +117,19 @@
                   <i class="devicon-jquery-plain colored" aria-hidden="true"> </i>
                   <span> jQuery </span>
                 </li>
+                <li class="skill-item">
+                  <span class="skill-text-icon" aria-hidden="true">GS</span>
+                  <span>GSAP</span>
+                </li>
+                <li class="skill-item">
+                  <span class="skill-text-icon" aria-hidden="true">CV</span>
+                  <span>Canvas</span>
+                </li>
               </ul>
+              <dl class="skill-experience">
+                <div><dt>화면 구현</dt><dd>HTML, CSS, JavaScript, jQuery를 활용한 웹·앱 UI 퍼블리싱과 운영 화면 유지보수</dd></div>
+                <div><dt>인터랙션</dt><dd>GSAP ScrollTrigger와 Canvas를 활용한 스크롤 연동 이미지 시퀀스 구현</dd></div>
+              </dl>
             </article>
             <article class="skill-card skill-card--design" aria-labelledby="skill-design">
               <div class="skill-card-heading">
@@ -115,12 +149,16 @@
                   <span> Figma </span>
                 </li>
               </ul>
+              <dl class="skill-experience">
+                <div><dt>디자인 학습</dt><dd>교육 과정에서 Photoshop과 Figma를 활용한 UI/UX 디자인 학습</dd></div>
+                <div><dt>시안 구현</dt><dd>Figma로 전달받은 시안을 확인하고 HTML, CSS, JavaScript로 화면 구현</dd></div>
+              </dl>
             </article>
             <article class="skill-card skill-card--backend" aria-labelledby="skill-backend">
               <div class="skill-card-heading">
                 <div>
                   <h3 class="skills-category" id="skill-backend">Backend</h3>
-                  <p class="skill-card-desc">서버와 데이터 처리</p>
+                  <p class="skill-card-desc">서버 템플릿 협업 경험</p>
                 </div>
                 <span class="skill-card-number" aria-hidden="true">03</span>
               </div>
@@ -130,7 +168,14 @@
                   <span> Spring Boot </span>
                   <em> 학습중 </em>
                 </li>
+                <li class="skill-item">
+                  <span class="skill-text-icon" aria-hidden="true">TH</span>
+                  <span>Thymeleaf</span>
+                </li>
               </ul>
+              <dl class="skill-experience">
+                <div><dt>템플릿 수정</dt><dd>Spring Boot 기반 프로젝트에서 백엔드 개발자와 협업하며 Thymeleaf 템플릿과 일부 Java 코드 수정</dd></div>
+              </dl>
             </article>
             <article class="skill-card skill-card--tools" aria-labelledby="skill-tools">
               <div class="skill-card-heading">
@@ -162,6 +207,10 @@
                   <span> ChatGPT </span>
                 </li>
               </ul>
+              <dl class="skill-experience">
+                <div><dt>버전 관리</dt><dd>Git을 활용해 협업 소스를 내려받고 수정 사항 관리</dd></div>
+                <div><dt>AI 활용</dt><dd>낯선 인터랙션과 코드 이해에 도움을 받고, 실행 결과를 확인하며 수정</dd></div>
+              </dl>
             </article>
           </div>
         </div>
@@ -197,13 +246,7 @@
                 <details class="project-details">
                   <summary>작업 내용 <span aria-hidden="true">+</span></summary>
                   <div class="project-details-content">
-                    <p>
-                      HTML, CSS, JavaScript 기반의 화면 퍼블리싱과 인터랙션 구현을 전담했습니다.
-                      GSAP ScrollTrigger와 HTML5 Canvas로 스크롤 위치에 맞춰 제품이 회전하는 듯한
-                      이미지 시퀀스를 구현했습니다. 이미지를 WebP로 변환하고 프레임 수를 조절했으며,
-                      이미지 프리로딩과 메모리 관리 방식을 적용하고 PC와 모바일의 이미지 프레임을
-                      구분했습니다.
-                    </p>
+                    <p>제품이 회전하는 듯한 화면을 스크롤 위치에 맞춰 보여주는 것을 목표로, 화면 퍼블리싱과 인터랙션 구현을 전담했습니다. GSAP ScrollTrigger로 스크롤 진행률을 제어하고 HTML5 Canvas에 해당 이미지 프레임을 그리는 방식으로 구현했습니다. 여러 이미지 프레임을 다루는 점을 고려해 WebP 변환과 프레임 수 조절, 이미지 프리로딩과 메모리 관리 방식을 적용했습니다. PC와 모바일은 이미지 프레임을 구분해 각 환경에 맞춰 대응했습니다.</p>
                   </div>
                 </details>
                 <div class="project-footer">
@@ -454,9 +497,9 @@
           </ol>
         </div>
       </section>
-      <section class="contact" id="contact">
+      <section class="contact" id="contact" aria-labelledby="contact-title">
         <div class="contact-inner">
-          <p class="contact-title">Contact</p>
+          <h2 class="contact-title" id="contact-title">Contact</h2>
           <div class="contact-content">
             <p class="contact-sub">같이 일하고 싶으시다면 언제든지 연락주세요.</p>
             <div class="contact-links">

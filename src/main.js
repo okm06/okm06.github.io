@@ -1,34 +1,33 @@
-/* global gsap, ScrollTrigger, Lenis */
-gsap.registerPlugin(ScrollTrigger);
-
-document.querySelector('#copyright-year').textContent = new Date().getFullYear();
-
-// 부드러운 스크롤과 스크롤 애니메이션을 같은 타이밍으로 갱신합니다.
-const lenis = new Lenis({ anchors: true });
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time) => lenis.raf(time * 1000));
-gsap.ticker.lagSmoothing(0);
-
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+const mobileMenu = window.matchMedia('(max-width: 768px)');
 const nav = document.querySelector('.nav');
 const toggle = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('.nav-links');
-const mobileMenu = window.matchMedia('(max-width: 768px)');
+const heroName = document.querySelector('.hero-name');
+const skillItems = [...document.querySelectorAll('.skill-item')];
+let smoothScroll = null;
+let cleanupMotion = () => {};
+
+// 기본 기능은 애니메이션 라이브러리가 없어도 동작합니다.
+document.querySelector('#copyright-year').textContent = new Date().getFullYear();
+
+function syncMenuScroll() {
+  const open = mobileMenu.matches && nav.classList.contains('nav--open');
+  document.documentElement.classList.toggle('is-menu-open', open);
+  if (open) smoothScroll?.stop();
+  else smoothScroll?.start();
+}
 
 function setMenu(open) {
   nav.classList.toggle('nav--open', open);
   toggle.setAttribute('aria-expanded', String(open));
   toggle.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
   navLinks.inert = mobileMenu.matches && !open;
-  if (mobileMenu.matches && open) {
-    lenis.stop();
-  } else {
-    lenis.start();
-  }
+  syncMenuScroll();
 }
 
-toggle.addEventListener('click', () => {
-  setMenu(!nav.classList.contains('nav--open'));
-});
+toggle.addEventListener('click', () => setMenu(!nav.classList.contains('nav--open')));
 navLinks.querySelectorAll('a').forEach((link) => {
   link.addEventListener('click', () => setMenu(false));
 });
@@ -40,123 +39,155 @@ document.addEventListener('keydown', (event) => {
 });
 mobileMenu.addEventListener('change', () => setMenu(false));
 setMenu(false);
+document.documentElement.classList.add('has-js');
 
-// 같은 행의 접힌 높이만 맞춥니다. 상세 내용을 펼친 카드는 독립적으로 늘어납니다.
+// 접힌 상태의 높이만 맞추므로 펼친 카드가 옆 카드를 늘리지 않습니다.
 const projectGrid = document.querySelector('.projects-grid');
 const projectCards = [...projectGrid.querySelectorAll('.project-item')];
 
 function alignProjectCards() {
   projectCards.forEach((card) => card.style.removeProperty('--project-base-height'));
   if (mobileMenu.matches) return;
-
-  const collapsedHeights = projectCards.map((card) => {
+  const heights = projectCards.map((card) => {
     const details = card.querySelector('.project-details');
-    const expandedHeight = details.open
+    const expanded = details.open
       ? details.getBoundingClientRect().height - details.querySelector('summary').getBoundingClientRect().height
       : 0;
-    return card.getBoundingClientRect().height - expandedHeight;
+    return card.getBoundingClientRect().height - expanded;
   });
-
   for (let index = 0; index < projectCards.length; index += 2) {
-    const height = Math.max(...collapsedHeights.slice(index, index + 2));
+    const height = Math.max(...heights.slice(index, index + 2));
     projectCards.slice(index, index + 2).forEach((card) => {
       card.style.setProperty('--project-base-height', `${height}px`);
     });
   }
 }
 
+function refreshScrollPositions() {
+  window.ScrollTrigger?.refresh();
+}
+
 projectGrid.querySelectorAll('.project-details').forEach((details) => {
   details.addEventListener('toggle', () => {
     alignProjectCards();
-    ScrollTrigger.refresh();
+    refreshScrollPositions();
   });
 });
-
 let projectGridWidth = -1;
-const projectResizeObserver = new ResizeObserver(([entry]) => {
-  if (entry.contentRect.width === projectGridWidth) return;
-  projectGridWidth = entry.contentRect.width;
+if ('ResizeObserver' in window) {
+  new ResizeObserver(([entry]) => {
+    if (entry.contentRect.width === projectGridWidth) return;
+    projectGridWidth = entry.contentRect.width;
+    alignProjectCards();
+    refreshScrollPositions();
+  }).observe(projectGrid);
+} else {
+  window.addEventListener('resize', alignProjectCards);
+}
+document.fonts?.ready.then(() => {
   alignProjectCards();
+  refreshScrollPositions();
 });
-projectResizeObserver.observe(projectGrid);
-document.fonts.ready.then(alignProjectCards);
 alignProjectCards();
 
-// 첫 화면 진입 애니메이션
-const heroName = document.querySelector('.hero-name');
-const heroParts = ['.hero-label', '.hero-name', '.hero-summary', '.hero-scroll'];
-gsap.set(heroParts, { opacity: 0, y: 30 });
-gsap.timeline({ delay: 0.3 })
-  .to(heroParts[0], { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' })
-  .to(heroName, { opacity: 1, y: 0, duration: 1, ease: 'power4.out' }, '-=0.3')
-  .to(heroParts[2], { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.5')
-  .to(heroParts[3], { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3');
+function configureMotion() {
+  cleanupMotion();
+  cleanupMotion = () => {};
+  if (reducedMotion.matches || !window.gsap) return;
 
-// 섹션별 스크롤 진입 애니메이션
-[
-  ['.skills', '.skills-title', '.skill-card'],
-  ['.projects', '.projects-title', '.project-item'],
-  ['.experience', '.experience-title', '.experience-item'],
-  ['.contact', '.contact-title', '.contact-content'],
-].forEach(([section, title, content]) => {
-  gsap.set(title, { opacity: 0, y: 40 });
-  gsap.set(content, { opacity: 0, y: section === '.contact' ? 40 : 30 });
-  ScrollTrigger.create({
-    trigger: section,
-    start: 'top 75%',
-    once: true,
-    onEnter: () => {
-      gsap.to(title, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-      gsap.to(content, {
-        opacity: 1, y: 0,
-        duration: section === '.contact' ? 0.8 : 0.6,
-        stagger: 0.1, delay: 0.2, ease: 'power3.out',
+  const gsap = window.gsap;
+  const scrollTrigger = window.ScrollTrigger;
+  const cleanups = [];
+  const icons = skillItems.map((item) => item.querySelector('i, img, .skill-text-icon')).filter(Boolean);
+  const context = gsap.context(() => {}, document.body);
+
+  cleanupMotion = () => {
+    cleanups.reverse().forEach((cleanup) => cleanup());
+    gsap.killTweensOf([heroName, ...skillItems, ...icons]);
+    context.revert();
+    gsap.set([heroName, ...skillItems, ...icons], { clearProps: 'transform' });
+    smoothScroll = null;
+    syncMenuScroll();
+  };
+
+  try {
+    if (scrollTrigger) gsap.registerPlugin(scrollTrigger);
+    if (window.Lenis) {
+      const lenis = new window.Lenis({ anchors: true });
+      smoothScroll = lenis;
+      const tick = (time) => lenis.raf(time * 1000);
+      gsap.ticker.add(tick);
+      if (scrollTrigger) lenis.on('scroll', scrollTrigger.update);
+      cleanups.push(() => {
+        gsap.ticker.remove(tick);
+        lenis.destroy();
       });
-    },
-  });
-});
+    }
 
-// 터치 기기에서는 마우스 전용 효과를 실행하지 않습니다.
-if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  const hero = document.querySelector('.hero');
-  let mouseX = 0;
-  let mouseY = 0;
-  let pointerPending = false;
+    context.add(() => {
+      const heroParts = ['.hero-label', '.hero-name', '.hero-summary', '.hero-scroll'];
+      gsap.from(heroParts, {
+        opacity: 0, y: 30, duration: 0.8, stagger: 0.15,
+        ease: 'power3.out', clearProps: 'opacity',
+      });
 
-  hero.addEventListener('mousemove', (event) => {
-    const bounds = hero.getBoundingClientRect();
-    mouseX = (event.clientX - bounds.left) / bounds.width - 0.5;
-    mouseY = (event.clientY - bounds.top) / bounds.height - 0.5;
-    pointerPending = true;
-  });
+      if (scrollTrigger) {
+        [
+          ['.skills', '.skills-title', '.skill-card'],
+          ['.projects', '.projects-title', '.project-item'],
+          ['.experience', '.experience-title', '.experience-item'],
+          ['.contact', '.contact-title', '.contact-content'],
+        ].forEach(([section, title, content]) => {
+          gsap.from(`${title}, ${section} ${content}`, {
+            opacity: 0, y: 30, duration: 0.7, stagger: 0.1,
+            ease: 'power3.out', clearProps: 'opacity,transform',
+            scrollTrigger: { trigger: section, start: 'top 85%', once: true },
+          });
+        });
+      }
 
-  // 마우스가 움직였을 때 제목 기울기를 갱신합니다.
-  gsap.ticker.add(() => {
-    if (!pointerPending) return;
-    pointerPending = false;
-    gsap.to(heroName, {
-      rotateY: mouseX * 24,
-      rotateX: -mouseY * 16,
-      transformPerspective: 1000,
-      duration: 0.8, ease: 'power2.out', overwrite: 'auto',
+      if (finePointer.matches) {
+        const hero = document.querySelector('.hero');
+        gsap.set(heroName, { transformPerspective: 1000 });
+        const rotateY = gsap.quickTo(heroName, 'rotationY', { duration: 0.8, ease: 'power2.out' });
+        const rotateX = gsap.quickTo(heroName, 'rotationX', { duration: 0.8, ease: 'power2.out' });
+        const move = (event) => {
+          const bounds = hero.getBoundingClientRect();
+          rotateY(((event.clientX - bounds.left) / bounds.width - 0.5) * 24);
+          rotateX(-((event.clientY - bounds.top) / bounds.height - 0.5) * 16);
+        };
+        const leave = () => { rotateY(0); rotateX(0); };
+        hero.addEventListener('mousemove', move);
+        hero.addEventListener('mouseleave', leave);
+        cleanups.push(() => {
+          hero.removeEventListener('mousemove', move);
+          hero.removeEventListener('mouseleave', leave);
+        });
+
+        skillItems.forEach((item, index) => {
+          const hover = (active) => {
+            gsap.to(item, { y: active ? -3 : 0, duration: 0.2, overwrite: 'auto' });
+            if (icons[index]) gsap.to(icons[index], { scale: active ? 1.1 : 1, duration: 0.2, overwrite: 'auto' });
+          };
+          const enter = () => hover(true);
+          const exit = () => hover(false);
+          item.addEventListener('mouseenter', enter);
+          item.addEventListener('mouseleave', exit);
+          cleanups.push(() => {
+            item.removeEventListener('mouseenter', enter);
+            item.removeEventListener('mouseleave', exit);
+          });
+        });
+      }
     });
-  });
-
-  hero.addEventListener('mouseleave', () => {
-    pointerPending = false;
-    gsap.to(heroName, { rotateY: 0, rotateX: 0, duration: 1, overwrite: 'auto' });
-  });
-
-  document.querySelectorAll('.skill-item').forEach((item) => {
-    const icon = item.querySelector('i, img');
-    item.addEventListener('mouseenter', () => {
-      gsap.to(item, { y: -3, duration: 0.2, ease: 'power2.out', overwrite: 'auto' });
-      gsap.to(icon, { scale: 1.1, duration: 0.2, overwrite: 'auto' });
-    });
-    item.addEventListener('mouseleave', () => {
-      gsap.to(item, { y: 0, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
-      gsap.to(icon, { scale: 1, duration: 0.3, overwrite: 'auto' });
-    });
-  });
-
+    syncMenuScroll();
+  } catch (error) {
+    cleanupMotion();
+    cleanupMotion = () => {};
+    console.warn('애니메이션을 생략하고 기본 화면을 표시합니다.', error);
+  }
 }
+
+reducedMotion.addEventListener('change', configureMotion);
+finePointer.addEventListener('change', configureMotion);
+configureMotion();

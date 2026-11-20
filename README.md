@@ -17,12 +17,19 @@ HTML, CSS, JavaScript로 구성한 정적 포트폴리오입니다.
 - `projects/five-dalant/`: 다섯달란트 리뉴얼 퍼블리싱 데모 (문의 전송 없음)
 - `src/assets/vendor/`: GSAP 3.15.0, ScrollTrigger, Lenis 1.3.23의 브라우저용 파일
 - `src/main.js`: 모바일 메뉴, 제목 기울기, 스크롤·호버 애니메이션
+- `favicon.svg`, `favicon.ico`, `images/apple-touch-icon.png`: 브라우저·홈 화면 아이콘
+- `images/og-image.png`: 링크 공유용 대표 이미지 (1200×630)
+- `scripts/create-brand-assets.py`: 파비콘·공유 이미지 재생성 도구 (선택 사항, Python/Pillow와 macOS 시스템 글꼴 사용)
 
 프로젝트와 연락처는 `index.html`에서 수정합니다. 경력은 같은 파일의 `id="experience"` 섹션에서 수정합니다.
 
 CSS를 추가할 때는 `src/index.css`에 `@import url(...)`을 추가합니다. HTML의 스타일시트 연결은 하나로 유지합니다.
 
 애니메이션 라이브러리는 로컬 파일로 연결되어 있습니다. 글꼴과 기술 아이콘 스타일은 외부 CDN을 사용하므로 인터넷 연결이 필요합니다. 라이브러리를 업데이트할 때는 파일의 라이선스 고지와 동봉된 라이선스를 유지하세요.
+
+콘텐츠는 기본적으로 표시되며, 애니메이션 라이브러리를 불러오지 못해도 메뉴와 프로젝트 설명을 사용할 수 있습니다. 운영체제의 ‘동작 줄이기’ 설정을 켜면 부드러운 스크롤, 진입 효과, 제목 기울기와 기술 아이콘 모션을 생략합니다. 설정을 변경하면 페이지를 새로 열지 않아도 적용됩니다.
+
+OG 메타데이터는 공개 주소 `https://okm06.github.io/`를 사용합니다. 호스팅 주소를 변경하면 `index.html`의 canonical, og:url, og:image와 twitter:image도 함께 수정하세요. 카카오톡 등에서 이전 공유 이미지를 저장해 둔 경우 캐시 갱신이 필요할 수 있습니다.
 
 ## 배포
 

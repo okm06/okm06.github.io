@@ -60,6 +60,32 @@
 }
 
 @media (max-width: 768px) {
+  html:not(.has-js) .nav {
+    position: relative;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  html:not(.has-js) .nav-toggle {
+    display: none;
+  }
+
+  html:not(.has-js) .nav-links {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  html:not(.has-js) .nav-links a {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+
   .nav {
     padding: 1rem 6vw;
     /* 필터는 내부 fixed 메뉴의 기준을 상단 바로 제한하므로 모바일에서는 해제합니다. */

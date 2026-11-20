@@ -12,7 +12,6 @@
   color: var(--text-primary);
   letter-spacing: -0.03em;
   margin-bottom: 4rem;
-  opacity: 0;
 }
 
 .skills-grid {
@@ -141,6 +140,41 @@
   color: var(--category-text);
   font-style: normal;
   font-size: 0.6rem;
+}
+
+.skill-item .skill-text-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 4px;
+  background: var(--category-bg);
+  color: var(--category-text);
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.skill-experience {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.skill-experience dt {
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.skill-experience dd {
+  color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {

@@ -18,7 +18,28 @@
 }
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
   height: 100%;
+}
+
+html.is-menu-open {
+  overflow: hidden;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10001;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--surface);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 body {
@@ -56,4 +77,19 @@ body::before {
   pointer-events: none;
   z-index: 9998;
   opacity: 0.12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .project-item:hover .project-preview img,
+  .contact-link:hover .contact-arrow {
+    transform: none !important;
+  }
 }
