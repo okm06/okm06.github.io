@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>5DALANT</title>
+
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- CSRF: XSRF-TOKEN 쿠키 값을 fetch 변경 요청 헤더에 자동 첨부 (빠른상담 접수용) -->
+    
+    <!-- Google tag (gtag.js) -->
+    
+    
+    <!-- Event snippet for Website lead conversion page -->
+    
+
+<link rel="stylesheet" href="preview.css" />
+</head>
+<body>
+<!----------------------------헤더시작------------------------>
+<header>
+    <div class="wrap head_wrap">
+        <a href="index.html" class="logo"><img src="assets/images/w_logo.svg" alt="로고" /></a>
+        <!-- 데스크탑에선 가로 메뉴, 768 이하에선 전체화면 오버레이로 바뀐다 (responsive.css) -->
+        <nav id="gnb">
+            <a href="index.html">다섯달란트 소개</a>
+            <a href="portfolio.html">포트폴리오</a>
+            <a href="contact.html" class="pay_contact"
+            ><img src="assets/images/pay_contact.svg" alt="" />문의하기</a
+            >
+        </nav>
+        <!-- 햄버거 : 768 이하에서만 보인다. 열림 상태는 body.menu_open 이 갖는다 -->
+        <button
+                type="button"
+                class="menu_btn"
+                aria-label="메뉴 열기"
+                aria-expanded="false"
+                aria-controls="gnb"
+        >
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+<!-------------------------헤더 끝------------------------->
+<div class="hero_video">
+    <video
+            src="assets/images/main_video.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+    ></video>
+</div>
+<!--배경 영상 끝-->
+
+<!--메인 시작-->
+<section class="hero">
+    <div class="hero_text_wrap wrap">
+        <!-- 5초마다 한 줄씩 교체된다. strong 을 더하거나 빼면 개수도 알아서 따라간다.
+             줄바꿈은 <br> 로 잡는다 (JS 가 <br> 기준으로 줄을 쪼개 마스크를 씌운다).
+             문구끼리 줄 수를 맞춰야 아래 문장이 위아래로 흔들리지 않는다 -->
+        <div class="hero_title">
+            <strong
+            >디지털 경험을 설계하는<br />
+                크리에이티브 파트너</strong
+            >
+            <strong
+            >생각을 서비스로 만드는<br />
+                확실한 실행력</strong
+            >
+            <strong
+            >시작부터 운영까지<br />
+                끝까지 함께합니다</strong
+            >
+        </div>
+        <p>Your idea, We make it a successful service.</p>
+        <a href="#none" class="down_company"
+        ><span>회사소개서</span><img src="assets/images/ic_download.svg" alt=""
+        /></a>
+    </div>
+</section>
+<section class="strength">
+    <div class="strength_text_wrap">
+        <p>WHY 5dalant</p>
+        <div class="change_text">
+            <strong class="intro"><span>왜</span> <span>다섯달란트인가?</span></strong>
+            <strong>아이디어를 현실로 만드는 앱 개발</strong>
+            <strong>고객 중심의 홈페이지 제작</strong>
+            <strong>탁월한 UI/UX 디자인</strong>
+            <strong>최신 기술로 만드는 혁신 서비스</strong>
+            <strong>안정적인 운영과 유지보수</strong>
+        </div>
+        <span
+        >브랜드를 이해하는 디자인부터 운영까지,<br />
+          다섯달란트가 일하는 다섯가지 기준을 소개합니다</span
+        >
+    </div>
+</section>
+<section class="work">
+    <div class="tag_wrap wrap">
+        <strong>우리가 하는 일</strong>
+        <p>
+            기획부터 디자인, 개발, 그리고 사후 관리까지 기술과 감각으로 브랜드의 온라인 경험을
+            완성합니다.
+        </p>
+        <div class="tag_box">
+            <span class="tag active">#UI⋅UX</span>
+            <span class="tag">#홈페이지</span>
+            <span class="tag">#모바일</span>
+            <span class="tag">#로고</span>
+            <span class="tag">#편집디자인</span>
+            <span class="tag">#서비스 운영</span>
+            <span class="tag">#서비스 구축</span>
+            <span class="tag">#브랜딩</span>
+            <span class="tag">#쇼핑몰</span>
+            <span class="tag">#앱 개발</span>
+            <span class="tag">#상세페이지</span>
+            <span class="tag">#웹진</span>
+        </div>
+    </div>
+</section>
+<section class="project">
+    <div class="project_wrap wrap">
+        <!-- 개별 포트폴리오 페이지로 연결할 링크. href 만 바꿔 끼우면 된다.
+             .mark = 화살표가 도는 창(overflow:hidden). 화살표 2개가 들어 있어서
+             호버하면 앞엣것이 우상향으로 빠져나가고 뒤엣것이 좌하단에서 올라온다 -->
+        <a href="portfolio.html" class="project_link arrow_link"
+        >Portfolio
+            <span class="mark" aria-hidden="true">
+            <svg class="arrow" viewBox="0 0 24 24" fill="none">
+              <path d="M7 17 17 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+              <path
+                      d="M8.5 7H17v8.5"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+              />
+            </svg>
+            <svg class="arrow arrow_next" viewBox="0 0 24 24" fill="none">
+              <path d="M7 17 17 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+              <path
+                      d="M8.5 7H17v8.5"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </a>
+        <!-- 관리자(/adm/portfolioList)에서 메인노출 체크한 것 중 최신 6개가 나온다 -->
+        <ul>
+            <li data-cat="ui"><a href="#none"><img src="assets/images/portfolio/portfolio1.jpg" alt="포트폴리오 샘플 1" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 1</p></div></a></li>
+<li data-cat="web"><a href="#none"><img src="assets/images/portfolio/portfolio2.jpg" alt="포트폴리오 샘플 2" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 2</p></div></a></li>
+<li data-cat="app"><a href="#none"><img src="assets/images/portfolio/portfolio3.jpg" alt="포트폴리오 샘플 3" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 3</p></div></a></li>
+<li data-cat="brand"><a href="#none"><img src="assets/images/portfolio/portfolio4.jpg" alt="포트폴리오 샘플 4" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 4</p></div></a></li>
+<li data-cat="shop"><a href="#none"><img src="assets/images/portfolio/portfolio5.jpg" alt="포트폴리오 샘플 5" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 5</p></div></a></li>
+<li data-cat="ui"><a href="#none"><img src="assets/images/portfolio/portfolio6.jpg" alt="포트폴리오 샘플 6" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 6</p></div></a></li>
+<li data-cat="web"><a href="#none"><img src="assets/images/portfolio/portfolio7.jpg" alt="포트폴리오 샘플 7" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 7</p></div></a></li>
+<li data-cat="app"><a href="#none"><img src="assets/images/portfolio/portfolio8.jpg" alt="포트폴리오 샘플 8" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 8</p></div></a></li>
+<li data-cat="brand"><a href="#none"><img src="assets/images/portfolio/portfolio9.jpg" alt="포트폴리오 샘플 9" loading="lazy"><div class="text_box"><p>포트폴리오 샘플 9</p></div></a></li>
+            
+        </ul>
+        <!-- 더보기 : 위 Portfolio 링크와 같은 곳으로 보낸다. href 두 곳을 같이 바꿀 것 -->
+        <div class="more_box">
+            <a href="portfolio.html" class="more_link arrow_link"> 더보기 </a>
+        </div>
+    </div>
+</section>
+<section class="stats">
+    <div class="wrap">
+        <div class="title_box">
+            <small>Achievements</small>
+            <strong>고객의 신뢰가 만든 <span>숫자들</span></strong>
+            <p>
+                12년간의 경험과 2,500건 이상의 프로젝트. 이 모든 기록은 고객 여러분의 선택과 신뢰가
+                있었기에 가능했습니다.
+            </p>
+        </div>
+        <div class="value">
+            <div class="num_box">
+                <div class="number">
+                    <span class="counter" data-target="12">12</span>
+                    <span class="plus">Y</span>
+                </div>
+                <p class="stat_en">EXPERIENCE</p>
+                <p class="stat_ko">제작 경력</p>
+            </div>
+            <div class="num_box">
+                <div class="number">
+                    <span class="counter" data-target="2695">2,695</span>
+                    <span class="plus">+</span>
+                </div>
+                <p class="stat_en">PROJECTS</p>
+                <p class="stat_ko">완성 프로젝트</p>
+            </div>
+            <div class="num_box">
+                <div class="number">
+                    <span class="counter" data-target="1559">1,559</span>
+                    <span class="plus">+</span>
+                </div>
+                <p class="stat_en">CLIENTS</p>
+                <p class="stat_ko">함께한 고객사</p>
+            </div>
+            <div class="num_box">
+                <div class="number">
+                    <span class="counter" data-target="99">99</span>
+                    <span class="plus">%</span>
+                </div>
+                <p class="stat_en">SATISFACTION</p>
+                <p class="stat_ko">고객 만족도</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="banner">
+    <small class="banner_label">Partners</small>
+    <div class="move">
+        <!-- 로고는 assets/images/partner/ 에 넣고 아래 src·alt 를 교체하세요.
+             개수를 늘리거나 줄여도 JS 가 화면을 채울 만큼 알아서 복제합니다.
+             .move_track 을 더 추가하면 줄 수가 늘고, 홀수 줄은 반대로 흐릅니다 -->
+        <div class="move_track">
+            <span><img src="assets/images/partner/logo01.svg" alt="파트너사 01" /></span>
+            <span><img src="assets/images/partner/logo02.svg" alt="파트너사 02" /></span>
+            <span><img src="assets/images/partner/logo03.svg" alt="파트너사 03" /></span>
+            <span><img src="assets/images/partner/logo04.svg" alt="파트너사 04" /></span>
+            <span><img src="assets/images/partner/logo05.svg" alt="파트너사 05" /></span>
+            <span><img src="assets/images/partner/logo06.svg" alt="파트너사 06" /></span>
+            <span><img src="assets/images/partner/logo07.svg" alt="파트너사 07" /></span>
+            <span><img src="assets/images/partner/logo08.svg" alt="파트너사 08" /></span>
+            <span><img src="assets/images/partner/logo09.svg" alt="파트너사 09" /></span>
+        </div>
+        <div class="move_track">
+            <span><img src="assets/images/partner/logo10.svg" alt="파트너사 10" /></span>
+            <span><img src="assets/images/partner/logo11.svg" alt="파트너사 11" /></span>
+            <span><img src="assets/images/partner/logo12.svg" alt="파트너사 12" /></span>
+            <span><img src="assets/images/partner/logo13.svg" alt="파트너사 13" /></span>
+            <span><img src="assets/images/partner/logo14.svg" alt="파트너사 14" /></span>
+            <span><img src="assets/images/partner/logo15.svg" alt="파트너사 15" /></span>
+            <span><img src="assets/images/partner/logo16.svg" alt="파트너사 16" /></span>
+            <span><img src="assets/images/partner/logo17.svg" alt="파트너사 17" /></span>
+            <span><img src="assets/images/partner/logo18.svg" alt="파트너사 18" /></span>
+        </div>
+    </div>
+</section>
+<section class="contact">
+    <div class="map"></div>
+    <div class="wrap">
+        <div class="contact_form_box">
+            <p>문의하기</p>
+            <span>다섯달란트에 의뢰하고 싶은 프로젝트에 대해 알려주세요.</span>
+            <div class="box">
+                <a href="contact.html">프로젝트 문의하기</a>ㄱ
+            </div>
+        </div>
+        <div class="text">
+            <strong>contact</strong>
+            <p>다섯달란트는 항상 고객을 맞이 할 준비가 되어있습니다.</p>
+        </div>
+        <div class="address">
+            <div class="row">
+                <p>Location</p>
+                <a href="#none" style="cursor: auto">부평 제임타워 3차 1239호 다섯달란트</a>
+            </div>
+            <div class="row">
+                <p>Tel</p>
+                <a href="tel:07075660902">070-7566-0902</a>
+            </div>
+            <div class="row">
+                <p>Mail</p>
+                <a href="mailto:support@5dalant">support@5dalant</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-------------------메인 끝----------------->
+<!-----------------푸터시작----------------------->
+<!--빠른 상담-->
+<div class="q_contact">
+    <div class="left">
+        <img src="assets/images/q_contact.svg" alt="빠른문의 아이콘" />
+        <span>빠른<br />상담</span>
+    </div>
+    <div class="right">
+        <div class="text_box">
+            <h2>빠른 상담하기</h2>
+            <span
+            >홈페이지, 쇼핑몰, 앱, ERP 구축까지 비즈니스에 필요한<br />
+            제작 방향과 견적을 빠르게 확인하세요.
+          </span>
+        </div>
+        <!-- 접수는 index.js 가 ajax(fetch)로 POST /inquiry/quick 처리 -->
+        <form id="quickForm" novalidate>
+            <div class="input_wrap">
+                <p>이름 <span>*</span></p>
+                <input required type="text" id="qc_name" name="writer" maxlength="20" placeholder="이름을 입력해주세요" autocomplete="name" />
+            </div>
+            <div class="input_wrap">
+                <p>연락처 <span>*</span></p>
+                <input required type="tel" id="qc_phone" name="phone" maxlength="13" inputmode="numeric" placeholder="연락처를 입력해 주세요" autocomplete="tel" />
+            </div>
+            <div class="input_wrap">
+                <p>상담서비스 <span>*</span></p>
+                <select required id="qc_service" name="service">
+                    <option value="" disabled selected hidden>선택해주세요</option>
+                    <option>회사/쇼핑몰 홈페이지</option>
+                    <option>제품 상세페이지</option>
+                    <option>프로모션 페이지</option>
+                    <option>APP</option>
+                    <option>아임웹</option>
+                    <option>ERP등 기타</option>
+                </select>
+            </div>
+            <!-- 허니팟 : 사람 눈에 안 보인다. 봇이 채우면 서버가 저장하지 않는다 -->
+            <input type="text" name="homepage" tabindex="-1" autocomplete="off" aria-hidden="true"
+                   style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" />
+            <div class="row">
+                <label>
+                    <input type="checkbox" id="qc_agree" name="agree" value="Y" />
+                    <span></span>
+                    <p>개인정보 이용 동의</p>
+                </label>
+                <button type="button" class="detail open_terms_popup">[자세히 보기]</button>
+            </div>
+            <button type="submit" class="submit_btn">신청하기</button>
+        </form>
+    </div>
+</div>
+<!--빠른 상담 끝-->
+<!--정부지원사업-->
+<div class="govermment">
+    <div class="left">
+        <img src="assets/images/government.svg" alt="빠른문의 아이콘" />
+        <span
+        >정부<br />지원<br />
+          사업</span
+        >
+    </div>
+    <div class="right">
+        <div class="text_box">
+            <h2>세상을 바꾸는<br />창업 기업과 함께 합니다.</h2>
+            <span
+            >브랜드 디자인 뿐만 아니라 웹/앱 서비스 구축까지 당신의 아이디어에 최적의 비즈니스
+            솔루션을 제공합니다.</span
+            >
+        </div>
+        <div class="link_wrap">
+            <a href="#none">
+                <img src="assets/images/government_de_1.svg" alt="" />
+                <span>전화문의</span>
+                <p>070 - 7566 - 0902</p>
+            </a>
+            <a href="contact.html">
+                <img src="assets/images/government_de_2.svg" alt="" />
+                <span style="line-height: 24px"
+                >제작문의<br />
+              하러가기</span
+                >
+            </a>
+        </div>
+    </div>
+</div>
+<!--정부지원사업 끝-->
+<footer>
+    <div class="wrap">
+        <div class="left">
+            <div class="row">
+                <a href="#none">회사소개</a>
+                <a href="contact.html">문의하기</a>
+            </div>
+            <ul class="address">
+                <li>
+                    <p>주소</p>
+                    <a href="#none" style="cursor: auto"
+                    >인천광역시 부평구 부평대로 제이타워 3차 1239호 다섯달란트</a
+                    >
+                </li>
+                <li>
+                    <p>전화</p>
+                    <a href="tel:07075660902">070-7566-0902</a>
+                </li>
+                <li>
+                    <p>이메일</p>
+                    <a href="mailto:support@5dalant.net">support@5dalant.net</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right">
+            <img src="assets/images/w_logo.svg" alt="" class="f_logo" />
+            <p>© 2026 5DALANT Co. all rights reserved.</p>
+        </div>
+    </div>
+</footer>
+<div class="terms_popup">
+    <div class="terms_popup_box">
+        <button type="button" class="terms_popup_close"><img src="assets/images/ic_close.svg" alt="" /></button>
+        <p>개인정보이용동의</p>
+        <div class="terms_inner">
+          <span
+          >개인정보처리방침<br />
+            다섯달란트(이하 “회사”)는 이용자의 개인정보를 중요하게 생각하며, 「개인정보 보호법」 등
+            관련 법령을 준수하고 있습니다. 회사는 개인정보처리방침을 통해 이용자의 개인정보가 어떠한
+            목적과 방식으로 수집·이용되고 있으며, 개인정보 보호를 위해 어떠한 조치를 취하고 있는지
+            안내드립니다.
+          </span>
+            <span>
+            1. 개인정보의 수집 및 이용 목적 회사는 다음의 목적을 위해 개인정보를 수집·이용합니다. •
+            홈페이지 문의 및 상담 신청 처리 • 서비스 제공 및 콘텐츠 제공 • 웹 컨설팅 및 견적 안내를
+            위한 기초 자료 확보 • 고객 문의 응대 및 원활한 의사소통 • 서비스 제안, 마케팅 활용 및
+            안내 • 구매 대행, 요금 결제 등 계약 이행에 필요한 업무 처리 수집된 개인정보는 위 목적
+            이외의 용도로 이용되지 않으며, 이용 목적이 변경되는 경우에는 관련 법령에 따라 필요한
+            조치를 이행합니다
+          </span>
+            <span>
+            2. 수집하는 개인정보의 항목 및 수집방법 회사는 홈페이지 문의, 상담 신청, 이메일, 전화
+            등을 통해 다음과 같은 개인정보를 수집할 수 있습니다. • 필수항목: 이름 또는 업체명,
+            연락처, 이메일 • 선택항목: 문의내용, 홈페이지 주소, 예산, 희망 일정, 첨부파일 등
+            이용자가 직접 입력한 정보
+          </span>
+            <span
+            >3. 개인정보의 보유 및 이용기간 회사는 원칙적으로 개인정보 수집 및 이용 목적이 달성되면
+            지체 없이 해당 개인정보를 파기합니다. 다만, 관계 법령에 따라 보존할 필요가 있는 경우에는
+            해당 법령에서 정한 기간 동안 보관합니다. • 홈페이지 문의 및 상담 신청 정보: 문의 처리
+            완료 후 1년 • 홈페이지 방문 기록: 1년 • 소비자의 불만 또는 분쟁처리에 관한 기록: 3년 •
+            계약 또는 청약철회 등에 관한 기록: 5년 • 대금결제 및 재화 등의 공급에 관한 기록: 5년
+          </span>
+            <span> </span>
+            <span
+            >4. 개인정보의 파기 ① 회사는 개인정보 보유기간의 경과, 처리 목적 달성 등 개인정보가
+            불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다. ② 다른 법령에 따라
+            개인정보를 계속 보존하여야 하는 경우에는 해당 개인정보를 별도의 데이터베이스(DB)로
+            옮기거나 보관 장소를 달리하여 보존합니다. ③ 개인정보의 파기 절차 및 방법은 다음과
+            같습니다. 파기절차 회사는 파기 사유가 발생한 개인정보를 선정하고, 개인정보 보호책임자의
+            확인을 거쳐 개인정보를 파기합니다. 파기방법 전자적 파일 형태로 저장된 개인정보는 복구
+            또는 재생할 수 없는 방법으로 삭제하며, 종이 문서에 기록된 개인정보는 분쇄하거나 소각하여
+            파기합니다.
+          </span>
+            <span
+            >5. 이용자 및 법정대리인의 권리·의무 및 행사방법 ① 이용자는 회사에 대해 언제든지 다음 각
+            호의 개인정보 보호 관련 권리를 행사할 수 있습니다. • 개인정보 열람 요구 • 오류 등이 있을
+            경우 정정 요구 • 개인정보 삭제 요구 • 개인정보 처리정지 요구 ② 권리 행사는 회사에 대해
+            서면, 전화, 이메일 등을 통해 하실 수 있으며, 회사는 이에 대해 지체 없이 조치하겠습니다.
+            ③ 이용자가 개인정보의 오류 등에 대한 정정 또는 삭제를 요구한 경우, 회사는 정정 또는
+            삭제를 완료할 때까지 해당 개인정보를 이용하거나 제공하지 않습니다. ④ 만 14세 미만 아동의
+            경우, 법정대리인 또는 위임을 받은 자 등 대리인을 통해 권리를 행사할 수 있습니다. ⑤
+            이용자는 관련 법령을 위반하여 회사가 처리하고 있는 본인 또는 타인의 개인정보 및 사생활을
+            침해해서는 안 됩니다.
+          </span>
+            <span
+            >6. 개인정보 자동 수집 장치의 설치·운영 및 거부 회사는 홈페이지 이용자의 편의 제공 및
+            서비스 개선을 위해 쿠키(cookie)를 사용할 수 있습니다. ① 쿠키의 사용 목적 회사는 접속
+            빈도, 방문 시간, 이용 형태 등을 분석하여 홈페이지 개선, 이용자 편의 제공, 마케팅 및
+            서비스 개선에 활용할 수 있습니다. ② 쿠키 설정 거부 방법 이용자는 웹 브라우저 설정을 통해
+            쿠키 저장을 거부하거나 삭제할 수 있습니다. 단, 쿠키 저장을 거부할 경우 일부 서비스
+            이용에 제한이 있을 수 있습니다. • Chrome: 설정 > 개인정보 보호 및 보안 > 쿠키 및 기타
+            사이트 데이터 • Edge: 설정 > 쿠키 및 사이트 권한 > 쿠키 및 사이트 데이터 관리 • Safari:
+            설정 > 개인정보 보호 > 쿠키 차단
+          </span>
+            <span
+            >7. 개인정보 보호책임자 및 민원서비스 회사는 이용자의 개인정보를 보호하고 개인정보와
+            관련한 불만을 처리하기 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
+            개인정보 보호책임자 • 성명: 진재연 • 전화번호: 070-7566-0902 • 이메일:
+            support@5dalant.net 이용자는 회사의 서비스를 이용하면서 발생하는 모든 개인정보보호 관련
+            문의, 불만처리, 피해구제 등에 관한 사항을 개인정보 보호책임자에게 문의할 수 있습니다.
+            회사는 이용자의 문의에 대해 신속하고 성실하게 답변하겠습니다. 기타 개인정보 침해에 대한
+            신고나 상담이 필요한 경우에는 아래 기관에 문의하실 수 있습니다. 1. 개인정보침해신고센터:
+            국번 없이 118 2. 개인정보분쟁조정위원회: 1833-6972 3. 대검찰청 사이버수사과: 국번 없이
+            1301 4. 경찰청 사이버수사국: 국번 없이 182
+          </span>
+            <span
+            >8. 개인정보처리방침의 변경 본 개인정보처리방침은 시행일로부터 적용됩니다. 법령 및 회사
+            내부 방침에 따라 내용의 추가, 삭제 또는 수정이 있을 경우에는 홈페이지를 통해
+            안내하겠습니다. • 시행일자: 2026년 7월 7일
+          </span>
+        </div>
+    </div>
+</div>
+
+<!-- 맨 위로 : 화면 오른쪽 아래 고정. 조금 내려가야 나타난다 (JS 가 .show 를 붙인다) -->
+<button type="button" class="to_top" aria-label="맨 위로">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+                d="M12 19V5M12 5l-7 7M12 5l7 7"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+        />
+    </svg>
+</button>
+<!-------------------------------푸터끝------------------------------>
+<script>
+    const popups = document.querySelectorAll(".terms_popup");
+
+    // 열린 동안엔 body.terms_open 으로 뒤 페이지 스크롤을 잠근다 (모양은 CSS 가 그린다)
+    function setPopupOpen(open) {
+        popups.forEach((popup) => popup.classList.toggle("active", open));
+        document.body.classList.toggle("terms_open", open);
+    }
+
+    document.querySelectorAll(".open_terms_popup").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            setPopupOpen(!document.body.classList.contains("terms_open"));
+        });
+    });
+
+    document.querySelectorAll(".terms_popup_close").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            setPopupOpen(false);
+        });
+    });
+
+    // 어두운 배경 클릭 / ESC 로도 닫힌다
+    popups.forEach(function (popup) {
+        popup.addEventListener("click", function (e) {
+            if (e.target === popup) setPopupOpen(false);
+        });
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") setPopupOpen(false);
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- 부드러운(관성) 스크롤 : ScrollTrigger 와 연동해 쓴다 (common.js 에서 초기화) -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="assets/js/common.js"></script>
+<!-- 메인에서만 : 빠른상담 접수 (정규식 검증 → ajax POST /inquiry/quick) -->
+<script src="assets/js/index.js"></script>
+
+<aside class="portfolio-demo-note" aria-label="퍼블리싱 데모 안내">
+  <p>포트폴리오용 퍼블리싱 데모입니다. 문의는 실제로 접수되지 않습니다.</p>
+  <a href="../../index.html#projects">포트폴리오로 돌아가기 ↗</a>
+</aside>
+</body>
+</html>

@@ -1,0 +1,361 @@
+@charset "utf-8";
+/*=====================================================================
+   포트폴리오 페이지 전용 스타일
+   - 메인(common.css)의 다크 톤·컬러 변수·폰트·카드 연출을 그대로 잇되,
+     영상 배경/핀 고정 같은 풀스크린 연출은 빼고 "훑어보기 좋은" 목록으로 짠다.
+   - 헤더/푸터는 공통 영역이라 여기엔 없다.
+     그래서 .pf_hero 위쪽에 나중에 들어올 고정 헤더(약 100px) 자리를 미리 비워둔다.
+   - 클래스는 전부 .pf_ 로 시작해 메인의 .project 계열과 겹치지 않게 격리한다.
+=====================================================================*/
+
+/* 페이지 최상위 래퍼. 이 블록만 통째로 가져다 쓰면 된다 */
+.pf {
+  /* ★ 나중에 붙일 고정 헤더의 높이. 지금은 헤더가 없어 0.
+     헤더를 붙일 때 이 값만 헤더 높이로 바꾸면
+       - sticky 필터바가 헤더 "아래"에 달라붙고 (헤더에 안 가려짐)
+       - 히어로 제목도 헤더 밑으로 안 숨는다
+     한 곳만 고치면 되도록 여기 한 변수로 묶어둔다.
+     (모바일 헤더가 70px 이면 아래 미디어쿼리에서 --header-h 를 70px 로) */
+  --header-h: 0px;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+}
+
+/*=============
+   pf_hero : 페이지 상단 타이틀 + 인트로 (영상 배너)
+   - 배경 영상은 이 배너 안에만 갇혀 재생되고 아래쪽에서 검정으로 페이드된다.
+=============*/
+.pf_hero {
+  position: relative; /* 배경 영상/페이드의 기준 */
+  overflow: hidden; /* 영상이 배너 밖으로 삐져나오지 않게 */
+  min-height: clamp(440px, 62vh, 680px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* 위 여백 = 헤더 높이(--header-h) + 여유. 헤더를 붙여도 제목이 헤더 밑으로 안 가린다.
+     지금은 --header-h 가 0 이라 여유값만 적용된다 */
+  padding: calc(var(--header-h) + clamp(90px, 12vh, 150px)) 0 clamp(56px, 7vw, 96px);
+  text-align: center;
+}
+.pf_hero_video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000; /* 영상 로드 전/여백을 페이지 배경과 같은 검정으로 */
+  pointer-events: none;
+}
+.pf_hero_video video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* 배너를 꽉 채운다 (메인은 원본 보존용 contain, 여긴 배경이라 cover) */
+  opacity: 0.9;
+}
+/* 한 장으로 두 가지를 동시에 처리한다.
+   ① 위쪽은 살짝 어둡게 깔아 흰 제목 가독성 확보
+   ② 아래로 갈수록 완전한 검정(--bg)이 되어 그리드 배경으로 이음매 없이 녹아든다 */
+.pf_hero_video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.4) 35%,
+    rgba(0, 0, 0, 0.85) 78%,
+    #000 100%
+  );
+}
+/* 제목 묶음을 영상 위로 올린다 */
+.pf_hero .wrap {
+  position: relative;
+  z-index: 1;
+}
+.pf_hero small {
+  display: inline-block;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--point);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.pf_hero h1 {
+  font-weight: 800;
+  font-size: clamp(48px, 9vw, 120px);
+  line-height: 1.02;
+  letter-spacing: -3px;
+}
+.pf_hero h1 span {
+  color: var(--point);
+}
+.pf_hero p {
+  font-size: clamp(16px, 1.8vw, 22px);
+  color: var(--mut);
+  line-height: 1.75;
+  margin: 26px auto 0;
+  max-width: 52ch;
+}
+
+/*=============
+   pf_filter : 카테고리 필터 (세그먼트 컨트롤)
+   - 활성 탭 뒤로 포인트색 알약(.pf_filter_thumb)이 JS 로 미끄러져 이동한다.
+   - 화면 위에 붙어 따라오도록 sticky. 나중에 헤더가 붙으면 top 값만 헤더 높이로 맞추면 된다.
+=============*/
+.pf_filter {
+  position: sticky;
+  /* 헤더 높이만큼 내려서 달라붙는다. 헤더가 없는 지금은 --header-h 가 0 이라 top:0 과 같고,
+     헤더(z-index:100)를 붙이면 그 아래(--header-h 지점)에 붙어 서로 안 겹친다.
+     필터바 z-index(10)가 헤더(100)보다 낮으니, 혹시 겹쳐도 헤더가 위에 온다 */
+  top: var(--header-h);
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+}
+/* 탭 묶음을 가운데로. 좁은 화면에선 이 요소가 가로 스크롤 컨테이너가 된다 */
+.pf_filter_inner {
+  display: flex;
+  justify-content: center;
+  padding: 0 5vw;
+}
+/* thumb 위치 측정 기준이 되는 실제 트랙. inline-flex 라 내용만큼만 차지한다 */
+.pf_filter_track {
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
+  /* 트랙 자체를 옅은 판 위에 얹어 "컨트롤"처럼 묶어 보이게 한다 */
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 5px;
+}
+/* 활성 탭 뒤를 채우는 알약. left/width 는 JS 가 활성 버튼에 맞춰 잡는다 */
+.pf_filter_thumb {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: calc(100% - 10px);
+  width: 0;
+  background: var(--point);
+  border-radius: 100px;
+  box-shadow: 0 6px 18px rgba(54, 101, 255, 0.4); /* 포인트색 글로우로 살짝 떠 보이게 */
+  z-index: 0;
+  pointer-events: none;
+}
+.pf_filter button {
+  position: relative;
+  z-index: 1; /* thumb 위로 글자가 올라오게 */
+  border: 0;
+  background: transparent;
+  color: var(--mut);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  padding: 11px 22px;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.35s ease;
+}
+@media (hover: hover) {
+  .pf_filter button:not(.active):hover {
+    color: var(--fg);
+  }
+}
+.pf_filter button.active {
+  color: #fff;
+}
+/* 카테고리별 개수 (JS 가 채운다) */
+.pf_filter button i {
+  font-style: normal;
+  font-size: 0.72em;
+  font-weight: 700;
+  margin-left: 6px;
+  vertical-align: 1px;
+  opacity: 0.55;
+  transition: opacity 0.35s ease;
+}
+.pf_filter button.active i {
+  opacity: 0.9;
+}
+
+/*=============
+   pf_grid : 작품 그리드 (메인 project 카드와 같은 정사각형 카드)
+=============*/
+.pf_list {
+  padding: clamp(40px, 6vw, 80px) 0 clamp(80px, 12vw, 160px);
+}
+/* 필터 결과가 하나도 없을 때 안내 문구. 기본은 숨김, JS 가 켠다 */
+.pf_empty {
+  display: none;
+  text-align: center;
+  color: var(--mut2);
+  font-size: 17px;
+  padding: 60px 0;
+}
+.pf_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+/* JS 필터가 숨긴 카드. display:none 이면 그리드에서 빠지면서 나머지가 다시 채워진다 */
+.pf_grid li.hide {
+  display: none;
+}
+.pf_grid li {
+  position: relative;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pf_grid li a {
+  height: 100%;
+  width: 100%;
+  display: block;
+  position: relative;
+}
+/* 아래에서 위로 어두워지는 그라데이션 : 흰 글자 가독성 확보용. 기본은 감춰둔다 */
+.pf_grid li a:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(transparent 35%, rgba(0, 0, 0, 0.8));
+  transition: opacity 0.5s;
+  opacity: 0;
+  pointer-events: none;
+}
+.pf_grid li a img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+@media (hover: hover) {
+  .pf_grid li a:hover:after {
+    opacity: 1;
+  }
+  .pf_grid li a:hover img {
+    transform: scale(1.1);
+  }
+}
+/* 카드 위 카테고리 뱃지 */
+.pf_grid li a .cat {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  padding: 6px 12px;
+  border-radius: 100px;
+}
+.pf_grid li a .text_box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 2;
+}
+.pf_grid li a .text_box p {
+  font-size: 30px;
+  font-weight: 700;
+  transform: translateY(15px);
+  transition: 0.3s;
+}
+.pf_grid li a .text_box span {
+  font-size: 13px;
+  color: #cfcfcf;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: 0.3s;
+}
+@media (hover: hover) {
+  .pf_grid li a:hover .text_box span {
+    max-height: 30px;
+    opacity: 1;
+    margin-top: 2px;
+  }
+  .pf_grid li a:hover .text_box p {
+    transform: translateY(0);
+  }
+}
+
+/*=============
+   반응형
+=============*/
+@media (max-width: 768px) {
+  .pf_filter {
+    padding: 12px 0;
+  }
+  /* 좁은 화면에선 세그먼트가 화면을 넘칠 수 있으니 가로 스크롤로 흐르게 한다.
+     스크롤은 이 컨테이너가 맡고, 안쪽 트랙(inline-flex)은 통째로 함께 움직인다 */
+  .pf_filter_inner {
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* 양끝을 살짝 흐려 "옆으로 더 있다"는 신호를 준다 (스크롤 힌트) */
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 28px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 28px),
+      transparent 100%
+    );
+  }
+  .pf_filter_inner::-webkit-scrollbar {
+    display: none;
+  }
+  .pf_filter button {
+    font-size: 15px;
+    padding: 10px 16px;
+  }
+  .pf_grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  /* 터치엔 hover 가 없으니 설명을 처음부터 펼쳐둔다 (메인 project 와 동일한 처리) */
+  .pf_grid li a:after {
+    opacity: 1;
+  }
+  .pf_grid li a .text_box {
+    padding: 14px;
+  }
+  .pf_grid li a .text_box p {
+    font-size: 20px;
+    transform: none;
+  }
+  .pf_grid li a .text_box span {
+    max-height: none;
+    opacity: 1;
+    margin-top: 2px;
+  }
+}
+@media (max-width: 500px) {
+  .pf_grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .pf_grid li a .text_box p {
+    font-size: 26px;
+  }
+}

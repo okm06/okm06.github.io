@@ -29,6 +29,7 @@
   color: var(--text-secondary);
   line-height: 1.8;
   margin-bottom: 4rem;
+  word-break: keep-all;
 }
 
 .contact-links {
@@ -89,6 +90,45 @@
   bottom: 2.5rem;
   left: 8vw;
   font-size: 0.7rem;
-  color: #333;
+  color: var(--text-secondary);
   letter-spacing: 0.1em;
+}
+
+@media (max-width: 640px) {
+  .contact {
+    padding: 6rem 6vw 8rem;
+  }
+
+  .contact-title {
+    margin-bottom: 3rem;
+  }
+
+  .contact-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.6rem 1rem;
+    padding: 1.5rem 0;
+  }
+
+  .contact-link:hover {
+    gap: 0.6rem 1rem;
+  }
+
+  .contact-link-label {
+    grid-column: 1 / -1;
+  }
+
+  .contact-link-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-arrow {
+    margin-left: 0;
+  }
+
+  .contact-footer {
+    left: 6vw;
+    bottom: 1.5rem;
+  }
 }

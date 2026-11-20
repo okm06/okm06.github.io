@@ -1,0 +1,1355 @@
+@charset "utf-8";
+.wrap,
+.wrap2 {
+  width: 90%;
+  margin: 0 auto;
+}
+body {
+  background: var(--bg);
+  overflow-x: hidden;
+  color: var(--fg);
+}
+
+header {
+  color: var(--fg);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  will-change: transform; /* 숨김/노출 트랜스폼용 */
+  border-bottom: 0.5px solid var(--line);
+}
+header .logo img {
+  width: 111px;
+}
+header.border_zero {
+  border-bottom: 0;
+}
+/* 스크롤 진행 바 : JS 가 body 에 붙인다. header(z-index:100) 보다 위 */
+.scroll_bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--point);
+  transform: scaleX(0);
+  transform-origin: 0 50%; /* 왼쪽에서 오른쪽으로 채워지게 */
+  z-index: 200;
+  will-change: transform;
+  pointer-events: none;
+}
+.head_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+header nav {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  font-size: 18px;
+  font-weight: 500;
+}
+header nav a {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+header .pay_contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  padding: 16px 22px;
+  border-radius: 100px;
+  border: 1px solid #f7f7f7;
+  height: auto;
+}
+/* 햄버거 버튼
+   기본은 숨김 → responsive.css 의 768 이하에서만 꺼내 쓴다.
+   막대 3개를 절대배치하지 않고 flex 로 벌려두면, 열릴 때 가운데만 지우고
+   위아래를 가운데로 모아 회전시키는 것만으로 X 가 된다 */
+.menu_btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 44px; /* 손가락으로 누르는 영역은 44px 아래로 내려가지 않게 */
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.menu_btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: var(--fg);
+  transition:
+    transform 0.3s ease,
+    opacity 0.2s ease;
+}
+/* 열림 : 위아래 막대를 가운데(=한 칸 8px)로 옮겨 겹친 뒤 45도씩 반대로 돌린다 */
+body.menu_open .menu_btn span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+body.menu_open .menu_btn span:nth-child(2) {
+  opacity: 0;
+}
+body.menu_open .menu_btn span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+/*=============
+      배경 영상 (고정)
+      body 직속으로 두고 화면에 고정한다.
+      hero / strength / work 는 배경이 없어서 이 영상이 그대로 비치고,
+      포트폴리오(.project)가 덮고 올라오는 구간에서 JS 가 서서히 감춘다.
+=============*/
+.hero_video {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none; /* 영상 위에서 마우스가 먹히지 않게 */
+  background: #000; /* contain 여백 + 페이지 배경을 한 번에 덮는다 */
+}
+/* 영상 위에 글자가 올라가므로 살짝 어둡게 깔아 가독성을 확보한다.
+   0 = 원본 그대로 / 0.45 = 현재 / 0.7 = 많이 어둡게 */
+.hero_video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+/*=============
+      hero
+=============*/
+/* ★ 섹션 높이에 dvh 를 쓰면 안 된다.
+   dvh 는 모바일 주소창이 접히고 펴질 때마다 값이 바뀐다. hero(100) + strength(600)
+   + work(300) = 1000dvh 가 stats 위에 쌓여 있어서, 뷰포트가 700->760px 이 되는 것만으로
+   그 아래가 600px 통째로 밀린다. 스크롤 방향을 바꿀 때마다 화면이 튀는 원인이었다.
+   svh = 주소창이 보이는 상태 기준 고정값이라 스크롤 중에 변하지 않는다.
+   (vh 는 svh 미지원 브라우저용 폴백. vh 도 스크롤 중에는 변하지 않는다) */
+.hero {
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  background: transparent;
+  position: relative; /* 고정 영상 위로 올리기 위한 기준 */
+  z-index: 1;
+}
+/* video 는 object-fit 이 먹으므로 화면을 채우는 데 계산이 필요 없다.
+   (iframe 은 이게 안 돼서 크게 키운 뒤 잘라내야 했다) */
+.hero_video video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* contain : 잘라내지 않고 전체를 보여준다. 화면이 영상(16:9)보다 납작하면
+     좌우에 여백이 생기는데, 영상 배경도 페이지 배경도 검정이라 티가 안 난다.
+       cover   = 꽉 채우되 잘림 (화면이 납작할수록 확대돼서 커 보임)
+       contain = 잘림 없음, 원래 비율 그대로 (현재) */
+  object-fit: contain;
+  background: #000; /* 여백을 배경과 같은 색으로 */
+  /* contain 은 "높이에 맞춰 꽉" 채우는 값이라, 화면이 영상보다 높으면 오히려 확대된다.
+     여기서 한 단계 더 줄여 크기를 잡는다. 이 숫자 하나만 조절하면 된다.
+       1    = 화면 높이에 꽉 (기본 contain)
+       0.85 = 조금 작게 (현재)
+       0.7  = 많이 작게 */
+  transform: scale(0.85);
+}
+.hero .hero_text_wrap {
+  margin-bottom: 120px;
+  position: relative; /* 영상 위로 올림 */
+  z-index: 1;
+}
+.hero .hero_text_wrap .down_company {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.54px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+/* 문구 3개를 grid 한 칸에 겹쳐 쌓는다.
+   높이는 가장 큰 문구 기준으로 잡히므로, 문구가 바뀌어도 아래 문장이 안 움직인다 */
+.hero .hero_text_wrap .hero_title {
+  display: grid;
+}
+.hero .hero_text_wrap .hero_title strong {
+  grid-area: 1 / 1;
+}
+.hero .hero_text_wrap strong {
+  font-weight: 700;
+  font-size: clamp(48px, 9vw, 140px);
+  line-height: 1.1;
+  letter-spacing: -2.16px;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+/* 줄마다 마스크 : 밖으로 나간 글자를 잘라내서 밑에서 솟아오르는 것처럼 보이게 함 */
+.hero .hero_text_wrap strong .line {
+  display: block;
+  overflow: hidden;
+}
+.hero .hero_text_wrap strong .line_in {
+  display: block;
+  will-change: transform;
+  /* overflow:hidden 이 ㅇ/ㅜ 같은 글자 아래쪽을 잘라먹지 않도록 여유를 주고
+     같은 값만큼 음수 마진으로 되돌려서 줄간격은 그대로 유지 */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.hero .hero_text_wrap p {
+  font-size: clamp(16px, 1.7vw, 30px);
+  color: #8a8a8a;
+  margin: 38px auto 0;
+  line-height: 1.7;
+  font-weight: 400;
+}
+/*=============
+      strength
+=============*/
+.strength {
+  height: 600vh;
+  height: 600svh;
+}
+.strength .strength_text_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  position: relative; /* 고정 배경 영상 위로 */
+  z-index: 1;
+}
+/* 문구 5개를 grid 한 칸에 겹쳐 쌓음 (높이는 가장 큰 문구 기준으로 자동) */
+.strength .change_text {
+  display: grid;
+  width: 100%;
+}
+.strength .change_text strong {
+  grid-area: 1 / 1;
+  opacity: 0;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+/* 인트로 문구 : 좌/우 두 덩어리로 나눠 갈라지게 함 */
+.strength .change_text .intro {
+  display: flex;
+  justify-content: center;
+  gap: 0.3em;
+}
+.strength .change_text .intro span {
+  display: inline-block;
+  will-change: transform;
+}
+.strength .strength_text_wrap p {
+  display: inline-block;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--point);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.strength .strength_text_wrap strong {
+  font-weight: 800;
+  font-size: clamp(48px, 7vw, 110px);
+  line-height: 1.06;
+  letter-spacing: -2px;
+  display: block;
+  text-align: center;
+}
+/* 직계 자식(맨 아래 설명문)만 잡도록 제한.
+   자손 선택자로 두면 .intro 안의 span까지 덮어써서 글자가 작아지고
+   margin:auto 때문에 좌우로 벌어짐 */
+.strength .strength_text_wrap > span {
+  font-size: clamp(17px, 1.9vw, 22px);
+  color: var(--mut);
+  line-height: 1.8;
+  font-weight: 400;
+  margin: 38px auto 0;
+  text-align: center;
+}
+/*=============
+      tag
+=============*/
+/* .work 높이 = 읽는 시간 + 덮이는 시간
+   덮이는 구간은 항상 딱 한 화면(100svh)이고, 나머지가 전부 "읽는 시간"이 된다.
+     200svh -> 한 화면 읽고 나서 덮이기 시작
+     300svh -> 두 화면 읽고 나서 (현재)
+     400svh -> 세 화면 읽고 나서
+   ★ .tag_wrap 은 같이 늘리면 안 된다. 내용이 세로 가운데로 내려가 화면 밖으로 밀린다. */
+.work {
+  width: 100vw;
+  height: 300vh;
+  height: 300svh;
+}
+.work .tag_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(70px, 9vw, 110px) 0;
+  height: 100vh;
+  height: 100svh; /* 100% 가 아니라 한 화면 고정 : .work 위쪽에 자리잡는다 */
+  box-sizing: border-box; /* padding 이 높이를 넘어서지 않도록 */
+  position: relative;
+  z-index: 1;
+  background: transparent; /* 뒤에 고정된 배경 영상이 비치도록 */
+  text-align: center;
+  /* 태그 등장 애니메이션이 화면 폭의 ±35% 까지 흩어졌다가 모인다.
+     .work 는 핀이 걸리는 동안 position:fixed 가 되어 body 의 overflow-x:hidden
+     을 벗어나므로, 여기서 잘라주지 않으면 그 순간 페이지가 가로로 밀린다.
+     (.strength_text_wrap 이 같은 이유로 이미 overflow:hidden 이다) */
+  overflow: hidden;
+}
+.work .tag_wrap strong {
+  font-weight: 800;
+  font-size: clamp(48px, 9vw, 110px);
+  line-height: 1;
+}
+.work .tag_wrap p {
+  font-size: clamp(17px, 1.9vw, 22px);
+  color: var(--mut);
+  line-height: 1.7;
+  margin: 32px auto 32px;
+  font-weight: 400;
+}
+.work .tag_box .tag {
+  font-weight: 800;
+  font-size: clamp(24px, 4.5vw, 50px);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 6px 22px;
+  border-radius: 60px;
+  letter-spacing: -2px;
+  line-height: 1;
+  box-sizing: border-box;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+@media (hover: hover) {
+  .work .tag_box .tag:hover {
+    color: var(--ac);
+    background: var(--point);
+  }
+}
+
+.work .tag_box .tag.active {
+  color: var(--ac);
+  background: var(--point);
+}
+.work .tag_box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+/*=============
+      project
+=============*/
+.project {
+  background: var(--fg);
+  padding: 200px 0;
+  position: relative;
+  z-index: 2;
+  width: 80vw;
+  margin: 0 auto;
+  border-radius: 100px 100px 0 0;
+}
+.project .project_link {
+  color: var(--surface);
+  font-weight: 800;
+  font-size: clamp(48px, 9vw, 108px);
+  letter-spacing: -3px;
+  margin-bottom: 50px;
+  display: inline-block;
+}
+.project .project_link span {
+  color: var(--point);
+}
+/*=============
+   arrow_link : 화살표가 순환하는 링크 (공용)
+   .project_link 와 .more_link 가 같이 쓴다 → 두 링크가 한 세트로 읽힌다.
+   쓰는 법 : <a class="arrow_link"> 글자 <span class="mark"><svg class="arrow">
+             <svg class="arrow arrow_next"></span></a>
+=============*/
+/* .mark = 화살표가 도는 창.
+   overflow:hidden 이라 나가는 화살표와 들어오는 화살표가 이 칸 밖에서는 안 보인다.
+   화살표를 쉬는 상태에도 띄워두는 이유 : 점만 있으면 누를 수 있는 줄 모르고,
+   모바일은 호버 자체가 없어서 링크라는 신호가 아예 전달되지 않는다.
+   em 기준이라 링크마다 font-size 만 다르면 화살표도 알아서 그에 맞게 커진다 */
+.arrow_link .mark {
+  position: relative;
+  display: inline-block;
+  width: 0.46em;
+  height: 0.46em;
+  overflow: hidden;
+  /* 시각적으로 글자 가운데쯤에 오도록 베이스라인에서 살짝 띄운다 */
+  vertical-align: 0.04em;
+}
+.arrow_link .arrow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+/* 뒤엣것은 창 밖 좌하단에 대기 */
+.arrow_link .arrow_next {
+  transform: translate(-100%, 100%);
+}
+/* 키보드 포커스에도 똑같이 (탭으로 넘어온 사람에게도 링크임을 보여준다) */
+.arrow_link:focus-visible .arrow {
+  transform: translate(100%, -100%);
+}
+.arrow_link:focus-visible .arrow_next {
+  transform: translate(0, 0);
+}
+/* 터치 기기에서 탭한 뒤 호버가 눌어붙는 걸 막는다 (사이트 전체가 쓰는 방식) */
+@media (hover: hover) {
+  .arrow_link:hover .arrow {
+    transform: translate(100%, -100%);
+  }
+  .arrow_link:hover .arrow_next {
+    transform: translate(0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrow_link .arrow {
+    transition: none;
+  }
+}
+.project .project_wrap ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+.project .project_wrap ul li {
+  position: relative;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.project .project_wrap ul li a {
+  height: 100%;
+  width: 100%;
+  display: block;
+  position: relative;
+}
+.project .project_wrap ul li a:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(transparent 35%, rgba(0, 0, 0, 0.8));
+  transition: opacity 0.5s;
+  opacity: 0;
+  pointer-events: none;
+}
+.project .project_wrap ul li a img {
+  width: 100%;
+  height: 100%;
+  transition: 0.3s;
+}
+@media (hover: hover) {
+  .project .project_wrap ul li a:hover:after {
+    opacity: 1;
+  }
+  .project .project_wrap ul li a:hover img {
+    transform: scale(1.1);
+  }
+}
+
+.project .project_wrap ul li a .text_box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 2;
+}
+.project .project_wrap ul li a .text_box p {
+  font-size: 36px;
+  font-weight: 700;
+  transform: translateY(15px);
+  transition: 0.3s;
+}
+.project .project_wrap ul li a .text_box span {
+  font-size: 13px;
+  color: #cfcfcf;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: 0.3s;
+}
+@media (hover: hover) {
+  .project .project_wrap ul li a:hover .text_box span {
+    max-height: 30px;
+    opacity: 1;
+    margin-top: 2px;
+  }
+  .project .project_wrap ul li a:hover .text_box p {
+    transform: translateY(0);
+  }
+}
+/* 그리드 아래 더보기 : 헤더의 문의하기 버튼과 같은 알약 모양으로 맞춰
+   사이트 안에서 "누르는 것"의 생김새를 하나로 유지한다.
+   (헤더는 검은 배경 위 흰 테두리, 여기는 흰 판 위 검은 테두리로 반전) */
+.project .more_box {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(40px, 5vw, 70px);
+}
+.project .more_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* 글자와 화살표 사이 */
+  padding: 17px 30px 17px 34px;
+  border: 1px solid rgba(10, 10, 10, 0.25);
+  border-radius: 100px;
+  color: var(--surface);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  transition:
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+}
+@media (hover: hover) {
+  .project .more_link:hover {
+    background: var(--surface);
+    border-color: var(--surface);
+    color: var(--fg);
+  }
+}
+.project .more_link:focus-visible {
+  background: var(--surface);
+  border-color: var(--surface);
+  color: var(--fg);
+}
+
+/*=============
+      stats
+=============*/
+.stats {
+  padding: clamp(100px, 13vw, 170px) 0px;
+}
+.stats .title_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: clamp(56px, 7vw, 90px);
+}
+.stats .title_box small {
+  display: inline-block;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--mut2);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.stats .title_box strong {
+  font-weight: 800;
+  font-size: clamp(38px, 6vw, 88px);
+  line-height: 1.12;
+  letter-spacing: -2px;
+}
+.stats .title_box strong span {
+  color: var(--point);
+}
+.stats .title_box p {
+  font-size: clamp(16px, 1.7vw, 21px);
+  color: var(--mut);
+  line-height: 1.75;
+  margin-top: 26px;
+  /* .wrap 이 90% 라 넓은 화면에서 한 줄이 지나치게 길어진다.
+     읽기 좋은 한 줄 길이(45~75자)로 묶어둔다 */
+  max-width: 46ch;
+  text-align: center;
+}
+.stats .value {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.stats .num_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(40px, 4.5vw, 64px) clamp(18px, 2vw, 30px);
+  border-right: 1px solid var(--line);
+}
+.stats .num_box:last-of-type {
+  border-right: 0px;
+}
+.stats .num_box .number {
+  display: flex;
+  align-items: flex-start;
+  /* 크기 기준을 부모에 두어야 아래 .plus 의 em 이 숫자 크기를 따라간다 */
+  font-size: clamp(40px, 5.5vw, 76px);
+}
+.stats .num_box .number span {
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: 0px;
+  color: #fff;
+  /* 카운트업 중 0->2,695 로 자릿수가 바뀌면 글리프 폭이 매 프레임 달라진다.
+     가운데 정렬이라 그대로 두면 숫자가 좌우로 떨린다 */
+  font-variant-numeric: tabular-nums;
+}
+.stats .num_box .number span.plus {
+  /* 고정 px 로 두면 숫자가 clamp 하한(40px)까지 줄었을 때 접미사와 크기가
+     같아져 위계가 무너진다. 숫자에 비례해 따라 줄도록 em 으로 */
+  font-size: 0.5em;
+  color: var(--mut2);
+  margin-left: 2px;
+  transition: color 0.35s;
+}
+.stats .num_box .stat_en {
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  color: var(--mut2);
+  margin-top: 20px;
+}
+.stats .num_box .stat_ko {
+  font-size: 15px;
+  color: var(--mut);
+  margin-top: 8px;
+}
+/*=============
+      banner
+=============*/
+.banner {
+  margin-bottom: 100px;
+}
+.banner .banner_label {
+  display: block;
+  text-align: center;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--mut2);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+/* .move = 창(넘치는 복제본을 잘라냄), .move_track = 실제로 움직이는 띠 */
+.banner .move {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  padding: clamp(28px, 3vw, 44px) 0;
+  /* 줄(.move_track)을 위아래로 쌓는다. 줄 간격은 로고 높이보다 좁게 잡아야
+     두 줄이 하나의 띠로 읽힌다 */
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 2.4vw, 38px);
+  /* 로고가 화면 가장자리에서 싹둑 잘리지 않도록 양끝을 흐린다.
+     마스크는 보더에도 걸리므로 위아래 선까지 같이 페이드되어,
+     바로 위 .stats .value 의 꽉 찬 띠와 형태가 구분된다 */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+.banner .move_track {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: max-content; /* 복제본이 줄바꿈되지 않고 옆으로 계속 이어지게 */
+  will-change: transform;
+}
+/* 로고 한 칸. 높이를 고정해야 가로형·정사각형 로고가 비슷한 덩치로 보인다 */
+.banner .move span {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(34px, 4.5vw, 56px);
+  padding: 0 clamp(20px, 2.5vw, 40px);
+}
+.banner .move span img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  /* 로고 원본이 검정~컬러로 제각각이라 검정 배경에서 어떤 건 아예 안 보인다.
+     brightness(0) 로 전부 검정 실루엣을 만든 뒤 invert 로 뒤집어 흰색으로 통일.
+     (로고는 비트맵 내장 SVG 라 fill 로는 색을 못 바꾼다) */
+  filter: brightness(0) invert(1);
+  /* 살짝 눌러두면 배경 띠로 물러나고, 마우스를 올린 로고만 또렷해진다 */
+  opacity: 0.55;
+  transition: opacity 0.3s ease;
+}
+.banner .move span:hover img {
+  opacity: 1;
+}
+/*=============
+      contact
+=============*/
+.contact {
+  position: relative;
+  /* 지도(1920x1080)가 잘리지 않도록 섹션 높이를 이미지 비율에 맞춘다 */
+  min-height: 56.25vw;
+  display: flex;
+  align-items: center;
+}
+.contact .map {
+  /* 내용 없는 배경 레이어라 부모에 깔아준다 (높이가 없으면 배경이 안 보인다) */
+  position: absolute;
+  inset: 0;
+  background: url(../images/map.svg) no-repeat center/cover;
+}
+.contact .wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.contact .address {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.contact .contact_form_box {
+  background: #fff;
+  width: 677px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  letter-spacing: -0.02em;
+  padding: 36px;
+}
+.contact .contact_form_box > p {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  color: #000;
+}
+.contact .contact_form_box > span {
+  font-size: 18px;
+  line-height: 32px;
+  color: #888787;
+  margin: 6px 0 0;
+}
+.contact .contact_form_box .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cecece;
+  width: 100%;
+  height: 200px;
+  margin: 20px 0 0;
+}
+.contact .text {
+  margin: 128px 0 44px;
+}
+.contact .text strong {
+  font-size: 60px;
+  line-height: 90px;
+  color: #fff;
+  font-family: "Poppins";
+  font-weight: 700;
+}
+.contact .text p {
+  font-size: 24px;
+  line-height: 29px;
+  color: #fff;
+}
+.contact .contact_form_box a {
+  padding: 20px 60px;
+  background: #000;
+  color: #fff;
+  font-size: 18px;
+  line-height: 32px;
+  font-weight: 700;
+  transition: background 0.3s;
+}
+.contact .address .row {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 20px;
+  color: #fff;
+}
+.contact .address .row p {
+  width: 170px;
+}
+/*=============
+      footer
+=============*/
+footer {
+  padding: 150px 0;
+}
+footer .wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+footer .left .row {
+  margin-bottom: 40px;
+}
+footer .left .row a {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.54px;
+  text-transform: uppercase;
+  position: relative;
+}
+footer .left .row a:first-of-type:after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -12px;
+}
+footer .left .row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+footer .address li {
+  display: flex;
+  align-items: center;
+}
+footer .address li p {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.32px;
+  width: 60px;
+}
+footer .address li a {
+  color: #adadad;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%; /* 16px */
+  letter-spacing: -0.32px;
+}
+footer .address {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+footer .right img {
+  width: 313px;
+}
+footer .right p {
+  color: #adadad;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 100%;
+  text-transform: uppercase;
+  margin-top: 30px;
+}
+/*=============
+      맨 위로
+=============*/
+/* 화면에 고정된 채 검은 섹션과 흰 포트폴리오 판 위를 번갈아 지나간다.
+   그래서 테두리만 있는 형태로 두면 흰 판에서 사라진다 → 포인트색으로 꽉 채운다 */
+.to_top {
+  position: fixed;
+  right: clamp(20px, 3vw, 44px);
+  bottom: clamp(20px, 3vw, 44px);
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff; /* 기본 흰색 */
+  color: #111; /* 흰 배경에서 화살표가 보이도록 어둡게 */
+  cursor: pointer;
+  z-index: 10; /* header(100) / scroll_bar(200) 보다는 아래 */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+  /* 기본은 숨김. visibility 까지 꺼야 안 보이는 버튼이 탭 이동으로 잡히지 않는다 */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background 0.2s ease,
+    visibility 0.3s;
+}
+.to_top svg {
+  width: 22px;
+  height: 22px;
+}
+/* JS 가 0.8화면 넘게 내려가면 붙인다 */
+.to_top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+@media (hover: hover) {
+  .to_top:hover {
+    background: #ececec; /* 살짝만 어둡게 */
+    color: #111;
+  }
+}
+/* 모바일 메뉴가 덮고 있는 동안에는 숨긴다 */
+body.menu_open .to_top {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .to_top {
+    transition: none;
+  }
+}
+
+/*빠른 문의*/
+.q_contact {
+  position: fixed;
+  bottom: 120px;
+  right: -380px;
+  z-index: 12; /* 닫힘 기본값을 높게 : 손잡이가 열린 다른 패널 위에 떠 항상 클릭 가능 */
+  display: flex;
+  align-items: flex-start;
+  transition: 0.3s;
+}
+.q_contact.active {
+  right: 0px;
+}
+/* 하나가 열려 있는 동안(body.side_open) 열려 있지 않은 나머지 탭은 완전히 숨긴다.
+   transition:0.3s 가 걸려 있어 스르륵 사라진다 ("하나 열리면 나머지는 안 보이게") */
+body.side_open .q_contact:not(.active),
+body.side_open .govermment:not(.active) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+/* ★ 클릭 판정 : 컨테이너 박스는 폼(.right) 때문에 세로로 커서 서로 겹친다.
+   투명해도 pointer-events 기본값이면 그 빈 박스가 아래 손잡이 클릭을 가로챈다
+   (배경 유무와 무관). 그래서 컨테이너는 클릭을 통과시키고,
+   실제로 눌러야 하는 손잡이(.left)·패널(.right)만 클릭을 받게 한다.
+   → 닫힌 상태에서도 두 손잡이가 서로 안 막고 항상 눌린다 */
+.q_contact,
+.govermment {
+  pointer-events: none;
+}
+.q_contact .left,
+.q_contact .right,
+.govermment .left,
+.govermment .right {
+  pointer-events: auto;
+}
+.q_contact .left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  background: var(--point);
+  padding: 24px 16px;
+  border-radius: 16px 0 0 16px;
+  cursor: pointer;
+}
+.q_contact .left span {
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+}
+.q_contact .right {
+  padding: 40px;
+  background: #fff;
+  border-radius: 0 0 0 40px;
+  background: #fff;
+  max-width: 380px;
+}
+.q_contact .right .text_box {
+  margin-bottom: 40px;
+}
+.q_contact .right .text_box h2 {
+  color: #222;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 140%;
+  letter-spacing: -0.9px;
+}
+.q_contact .right .text_box span {
+  color: #666;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.39px;
+}
+.q_contact .right form .input_wrap {
+  display: flex;
+  align-items: center;
+}
+.q_contact .right form .input_wrap p {
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 150%;
+  letter-spacing: -0.42px;
+  width: 150px;
+}
+.q_contact .right form .input_wrap span {
+  color: #3665ff;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 150%;
+  letter-spacing: -0.3px;
+}
+.q_contact .right form .input_wrap input,
+.q_contact .right form .input_wrap select {
+  color: #222;
+  font-family: "Pretendard";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.42px;
+  border: 0px;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.q_contact .right form .input_wrap select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 22px;
+  background: none;
+  cursor: pointer;
+}
+.q_contact .right form .input_wrap:has(select) {
+  position: relative;
+}
+.q_contact .right form .input_wrap:has(select)::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 1.6px solid #666;
+  border-bottom: 1.6px solid #666;
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.q_contact .right form .input_wrap select:invalid {
+  color: #999;
+}
+
+.q_contact .right form .input_wrap select option {
+  color: #222;
+}
+
+.q_contact .right form .input_wrap input::placeholder {
+  color: #999;
+}
+.q_contact .right form label p {
+  color: #666;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.39px;
+}
+.q_contact .right form label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/*=============
+   커스텀 체크박스
+   - 네이티브 input 은 화면에서 숨기고(접근성 위해 지우지는 않음),
+     바로 뒤 <span> 을 네모 박스로 그린다.
+   - 체크 상태(input:checked)를 인접 선택자(+ span)로 받아 색과 체크표시를 켠다.
+=============*/
+.q_contact .right form label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+}
+.q_contact .right form label input[type="checkbox"] + span {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+/* 박스 안의 흰 체크(∨) : 얇은 두 변만 남긴 사각형을 45도 돌려 만든다.
+   기본은 scale(0) 으로 숨겼다가 체크되면 팝업 */
+.q_contact .right form label input[type="checkbox"] + span::after {
+  content: "";
+  width: 5px;
+  height: 9px;
+  margin-top: -1px; /* 시각적 중앙 보정 */
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.2s ease;
+}
+.q_contact .right form label input[type="checkbox"]:checked + span {
+  background: #3665ff;
+  border-color: #3665ff;
+}
+.q_contact .right form label input[type="checkbox"]:checked + span::after {
+  transform: rotate(45deg) scale(1);
+}
+/* 키보드로 탭해 온 경우에도 체크박스임을 알 수 있게 포커스 링 */
+.q_contact .right form label input[type="checkbox"]:focus-visible + span {
+  outline: 2px solid #3665ff;
+  outline-offset: 2px;
+}
+.q_contact .right form label p,
+.q_contact .right form .detail {
+  color: #666;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.39px;
+}
+.q_contact .right form .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0 40px;
+}
+.q_contact .right form .submit_btn {
+  display: flex;
+  width: 100%;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background: #222;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.42px;
+}
+/*정부지원 사업*/
+.govermment {
+  position: fixed;
+  bottom: 241px;
+  right: -380px;
+  z-index: 12; /* 닫힘 기본값을 높게 : 손잡이가 열린 다른 패널 위에 떠 항상 클릭 가능 */
+  display: flex;
+  align-items: flex-end;
+  transition: 0.3s;
+}
+.govermment.active {
+  right: 0;
+}
+.govermment .left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  background: #fff;
+  padding: 24px 16px;
+  border-radius: 16px 0 0 16px;
+  cursor: pointer;
+}
+.govermment .left span {
+  color: #222;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+}
+.govermment .right {
+  padding: 40px;
+  background: #fff;
+  border-radius: 40px 0 0 0;
+  background: #fff;
+  max-width: 380px;
+}
+.govermment .right .text_box {
+  margin-bottom: 40px;
+}
+.govermment .right .text_box h2 {
+  color: #222;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 140%;
+  letter-spacing: -0.9px;
+}
+.govermment .right .text_box span {
+  color: #666;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.39px;
+}
+.govermment .right .link_wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.govermment .right .link_wrap a:first-of-type {
+  background: var(--point);
+  display: flex;
+  flex-direction: column;
+}
+.govermment .right .link_wrap a {
+  padding: 14px 20px;
+  width: 45%;
+  height: 138px;
+  border-radius: 5px;
+}
+.govermment .right .link_wrap a span {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+}
+.govermment .right .link_wrap a p {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.govermment .right .link_wrap a:first-of-type img {
+  width: 18px;
+  margin-bottom: 5px;
+}
+.govermment .right .link_wrap a:last-of-type {
+  background: #888787;
+  display: flex;
+  flex-direction: column;
+}
+.govermment .right .link_wrap a:last-of-type img {
+  width: 20px;
+  margin-bottom: 5px;
+}
+/*약관 팝업*/
+/* 팝업이 열린 동안 뒤 페이지가 따라 스크롤되지 않게 (JS 가 붙인다) */
+body.terms_open {
+  overflow: hidden;
+}
+.terms_popup {
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+          opacity 0.3s ease,
+          visibility 0.3s;
+  pointer-events: none;
+  z-index: 1001;
+}
+.terms_popup.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.terms_popup .terms_popup_box {
+  border-radius: 16px;
+  background: #fff;
+  padding: 40px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  height: 516px;
+  width: 360px;
+  transform: scale(0.9) translateY(16px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+.terms_inner span {
+  color: #64696e;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: -0.28px;
+}
+.terms_popup_box p {
+  color: #222;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.terms_inner {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.terms_popup .terms_popup_close {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .terms_popup .terms_popup_box {
+    width: 100%;
+    height: calc(100% - 120px);
+  }
+}

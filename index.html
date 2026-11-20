@@ -1,20 +1,399 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+    <meta
+      name="description"
+      content="프론트엔드 개발자 오경민의 포트폴리오. HTML, CSS, JavaScript로 만드는 웹과 인터랙션을 소개합니다."
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
-    />
-    <title>portfolio2</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <title>오경민 | Frontend Developer</title>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <main>
+      <nav class="nav" aria-label="주 메뉴">
+        <span class="nav-logo"> OKM </span>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="메뉴 열기"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          <span> </span>
+          <span> </span>
+        </button>
+        <ul class="nav-links" id="nav-links">
+          <li>
+            <a href="#skills"> Skills </a>
+          </li>
+          <li>
+            <a href="#projects"> Projects </a>
+          </li>
+          <li>
+            <a href="#experience"> Experience </a>
+          </li>
+          <li>
+            <a href="#contact"> Contact </a>
+          </li>
+        </ul>
+      </nav>
+      <section class="hero">
+        <div class="hero-inner">
+          <p class="hero-label">오경민</p>
+          <h1 class="hero-name">
+            Frontend
+            <br />
+            Developer
+          </h1>
+          <div class="hero-summary">
+            <p class="hero-intro">
+              작은 디테일을 다듬어,<br />자연스럽게 사용할 수 있는 웹을 만듭니다.
+            </p>
+            <p class="hero-desc">
+              HTML, CSS, JavaScript를 기반으로<br />화면과 인터랙션을 구현하는 오경민입니다.
+            </p>
+            <div class="hero-actions">
+              <a class="hero-button hero-button--primary" href="#projects"
+                >프로젝트 보기 <span aria-hidden="true">↗</span></a
+              >
+              <a class="hero-button hero-button--secondary" href="#contact"
+                >연락하기 <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+        </div>
+        <span class="hero-scroll"> Scroll </span>
+      </section>
+      <section class="skills" id="skills" aria-labelledby="skills-title">
+        <div class="skills-inner">
+          <h2 class="skills-title" id="skills-title">Skills</h2>
+          <div class="skills-grid">
+            <article class="skill-card skill-card--frontend" aria-labelledby="skill-frontend">
+              <div class="skill-card-heading">
+                <div>
+                  <h3 class="skills-category" id="skill-frontend">Frontend</h3>
+                  <p class="skill-card-desc">웹 화면과 인터랙션</p>
+                </div>
+                <span class="skill-card-number" aria-hidden="true">01</span>
+              </div>
+              <ul class="skills-tags">
+                <li class="skill-item">
+                  <i class="devicon-html5-plain colored" aria-hidden="true"> </i>
+                  <span> HTML </span>
+                </li>
+                <li class="skill-item">
+                  <i class="devicon-css3-plain colored" aria-hidden="true"> </i>
+                  <span> CSS </span>
+                </li>
+                <li class="skill-item">
+                  <i class="devicon-javascript-plain colored" aria-hidden="true"> </i>
+                  <span> JavaScript </span>
+                </li>
+                <li class="skill-item">
+                  <i class="devicon-jquery-plain colored" aria-hidden="true"> </i>
+                  <span> jQuery </span>
+                </li>
+              </ul>
+            </article>
+            <article class="skill-card skill-card--design" aria-labelledby="skill-design">
+              <div class="skill-card-heading">
+                <div>
+                  <h3 class="skills-category" id="skill-design">Design</h3>
+                  <p class="skill-card-desc">화면 설계와 시각 디자인</p>
+                </div>
+                <span class="skill-card-number" aria-hidden="true">02</span>
+              </div>
+              <ul class="skills-tags">
+                <li class="skill-item">
+                  <i class="devicon-photoshop-plain colored" aria-hidden="true"> </i>
+                  <span> Photoshop </span>
+                </li>
+                <li class="skill-item">
+                  <i class="devicon-figma-plain colored" aria-hidden="true"> </i>
+                  <span> Figma </span>
+                </li>
+              </ul>
+            </article>
+            <article class="skill-card skill-card--backend" aria-labelledby="skill-backend">
+              <div class="skill-card-heading">
+                <div>
+                  <h3 class="skills-category" id="skill-backend">Backend</h3>
+                  <p class="skill-card-desc">서버와 데이터 처리</p>
+                </div>
+                <span class="skill-card-number" aria-hidden="true">03</span>
+              </div>
+              <ul class="skills-tags">
+                <li class="skill-item skill-item--learning">
+                  <i class="devicon-spring-plain colored" aria-hidden="true"> </i>
+                  <span> Spring Boot </span>
+                  <em> 학습중 </em>
+                </li>
+              </ul>
+            </article>
+            <article class="skill-card skill-card--tools" aria-labelledby="skill-tools">
+              <div class="skill-card-heading">
+                <div>
+                  <h3 class="skills-category" id="skill-tools">Tools</h3>
+                  <p class="skill-card-desc">버전 관리와 작업 도구</p>
+                </div>
+                <span class="skill-card-number" aria-hidden="true">04</span>
+              </div>
+              <ul class="skills-tags">
+                <li class="skill-item">
+                  <i class="devicon-github-original colored" aria-hidden="true"> </i>
+                  <span> GitHub </span>
+                </li>
+                <li class="skill-item">
+                  <i class="devicon-git-plain colored" aria-hidden="true"> </i>
+                  <span> Git </span>
+                </li>
+                <li class="skill-item">
+                  <img src="./src/assets/icons/claude.svg" alt="Claude" class="skill-svg-icon" />
+                  <span> Claude </span>
+                </li>
+                <li class="skill-item">
+                  <img src="./src/assets/icons/gemini.svg" alt="Gemini" class="skill-svg-icon" />
+                  <span> Gemini </span>
+                </li>
+                <li class="skill-item">
+                  <img src="./src/assets/icons/chatgpt.svg" alt="ChatGPT" class="skill-svg-icon" />
+                  <span> ChatGPT </span>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="projects" id="projects" aria-labelledby="projects-title">
+        <div class="projects-inner">
+          <h2 class="projects-title" id="projects-title">Projects</h2>
+          <div class="projects-grid">
+            <article class="project-item" aria-labelledby="project-01">
+              <div class="project-preview">
+                <img src="./images/jworld.webp" alt="제이월드 홈페이지 메인 화면" width="1600" height="1000" loading="lazy" decoding="async" />
+              </div>
+              <div class="project-info">
+                <div class="project-heading">
+                  <h3 class="project-name" id="project-01">제이월드</h3>
+                </div>
+                <p class="project-desc">스크롤에 연동되는 3D 회전 이미지 시퀀스</p>
+                <p class="project-role">퍼블리싱 전담</p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">GSAP</span>
+                  <span class="project-tag">Canvas</span>
+                </div>
+                <details class="project-details">
+                  <summary>작업 내용 <span aria-hidden="true">+</span></summary>
+                  <div class="project-details-content">
+                    <p>HTML, CSS, JavaScript 기반의 화면 퍼블리싱과 인터랙션 구현을 전담했습니다. GSAP ScrollTrigger와 HTML5 Canvas로 스크롤 위치에 맞춰 제품이 회전하는 듯한 이미지 시퀀스를 구현했습니다. 이미지를 WebP로 변환하고 프레임 수를 조절했으며, 이미지 프리로딩과 메모리 관리 방식을 적용하고 PC와 모바일의 이미지 프레임을 구분했습니다.</p>
+                  </div>
+                </details>
+                <div class="project-footer">
+                  <div class="project-links">
+                    <a class="project-link" href="http://3.34.165.36:8080/" target="_blank" rel="noopener noreferrer" aria-label="제이월드 사이트 보기 (새 탭)">사이트 보기 <span aria-hidden="true">↗</span></a>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="project-item" aria-labelledby="project-02">
+              <div class="project-preview">
+                <img src="./images/teemo.webp" alt="TEEMO Golf 홈페이지 메인 화면" width="1600" height="1000" loading="lazy" decoding="async" />
+              </div>
+              <div class="project-info">
+                <div class="project-heading">
+                  <h3 class="project-name" id="project-02">TEEMO Golf</h3>
+                </div>
+                <p class="project-desc">웹사이트 퍼블리싱 및 운영 유지보수</p>
+                <p class="project-role">퍼블리싱 전담</p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">GSAP</span>
+                </div>
+                <details class="project-details">
+                  <summary>작업 내용 <span aria-hidden="true">+</span></summary>
+                  <div class="project-details-content">
+                    <p>HTML, CSS, JavaScript 기반의 초기 화면 퍼블리싱을 전담했습니다. 운영 중에는 기능 추가에 따른 UI 구현, 화면 구성 변경, 기존 요소 삭제 등 수정 요청을 반영하며 유지보수를 진행했습니다.</p>
+                  </div>
+                </details>
+                <div class="project-footer">
+                  <div class="project-links">
+                    <a class="project-link" href="https://teemogolf.com/" target="_blank" rel="noopener noreferrer" aria-label="TEEMO Golf 사이트 보기 (새 탭)">사이트 보기 <span aria-hidden="true">↗</span></a>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="project-item" aria-labelledby="project-03">
+              <div class="project-preview">
+                <img src="./images/onetop.webp" alt="ONETOP 앱 마이페이지와 상품 목록 화면" width="1600" height="1000" loading="lazy" decoding="async" />
+              </div>
+              <div class="project-info">
+                <div class="project-heading">
+                  <h3 class="project-name" id="project-03">ONETOP</h3>
+                </div>
+                <p class="project-desc">모바일 앱 UI 퍼블리싱</p>
+                <p class="project-role">퍼블리싱 전담</p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">GSAP</span>
+                </div>
+                <details class="project-details">
+                  <summary>작업 내용 <span aria-hidden="true">+</span></summary>
+                  <div class="project-details-content">
+                    <p>ONETOP 모바일 앱의 HTML, CSS, JavaScript 기반 UI 퍼블리싱을 전담했습니다.</p>
+                  </div>
+                </details>
+                <div class="project-footer">
+                  <div class="project-links">
+                    <a class="project-link" href="https://play.google.com/store/apps/details?id=com.evernet_.evernet&amp;hl=ko" target="_blank" rel="noopener noreferrer" aria-label="ONETOP Google Play 앱 소개 보기 (새 탭)">Google Play <span aria-hidden="true">↗</span></a>
+                    <a class="project-link" href="https://apps.apple.com/kr/app/onetop/id6762181768" target="_blank" rel="noopener noreferrer" aria-label="ONETOP App Store 앱 소개 보기 (새 탭)">App Store <span aria-hidden="true">↗</span></a>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="project-item" aria-labelledby="project-04">
+              <div class="project-preview">
+                <img src="./images/yozm.webp" alt="YOZM 그릭요거트 이벤트 페이지 메인 화면" width="1600" height="1000" loading="lazy" decoding="async" />
+              </div>
+              <div class="project-info">
+                <div class="project-heading">
+                  <h3 class="project-name" id="project-04">YOZM 그릭요거트 이벤트 페이지</h3>
+                </div>
+                <p class="project-desc">이벤트 페이지 퍼블리싱</p>
+                <p class="project-role">퍼블리싱 전담</p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">GSAP</span>
+                </div>
+                <details class="project-details">
+                  <summary>작업 내용 <span aria-hidden="true">+</span></summary>
+                  <div class="project-details-content">
+                    <p>HTML, CSS, JavaScript를 활용해 YOZM 그릭요거트 이벤트 페이지의 화면 퍼블리싱과 인터랙션 구현을 전담했습니다.</p>
+                  </div>
+                </details>
+                <div class="project-footer">
+                  <div class="project-links">
+                    <a class="project-link" href="https://yozm.co.kr/article/이벤트/8/30353/" target="_blank" rel="noopener noreferrer" aria-label="YOZM 종료된 이벤트 공식 게시물 보기 (새 탭)">공식 이벤트 기록 <span aria-hidden="true">↗</span></a>
+                  </div>
+                  <p class="project-link-note">종료된 이벤트의 공식 게시물입니다.</p>
+                </div>
+              </div>
+            </article>
+            <article class="project-item" aria-labelledby="project-05">
+              <div class="project-preview">
+                <img src="./images/five-dalant.webp" alt="다섯달란트 리뉴얼 홈페이지 메인 화면" width="1600" height="1000" loading="lazy" decoding="async" />
+              </div>
+              <div class="project-info">
+                <div class="project-heading">
+                  <h3 class="project-name" id="project-05">홈페이지 리뉴얼</h3>
+                </div>
+                <p class="project-desc">홈페이지 리뉴얼 및 인터랙션 구현</p>
+                <p class="project-role">퍼블리싱 전담</p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">GSAP</span>
+                </div>
+                <details class="project-details">
+                  <summary>작업 내용 <span aria-hidden="true">+</span></summary>
+                  <div class="project-details-content">
+                    <p>HTML, CSS, JavaScript, GSAP을 활용해 다섯달란트 홈페이지 리뉴얼의 화면 퍼블리싱과 인터랙션 구현을 전담했습니다.</p>
+                  </div>
+                </details>
+                <div class="project-footer">
+                  <div class="project-links">
+                    <a class="project-link" href="./projects/five-dalant/index.html" target="_blank" rel="noopener noreferrer" aria-label="다섯달란트 홈페이지 리뉴얼 퍼블리싱 데모 보기 (새 탭)">퍼블리싱 보기 <span aria-hidden="true">↗</span></a>
+                  </div>
+                  <p class="project-link-note">화면과 인터랙션을 확인하는 퍼블리싱 데모입니다.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="experience" id="experience" aria-labelledby="experience-title">
+        <div class="experience-inner">
+          <h2 class="experience-title" id="experience-title">Experience</h2>
+          <ol class="experience-timeline">
+            <li class="experience-item">
+              <p class="experience-date">
+                <time datetime="2025-12">2025.12</time> – <time datetime="2026-08">2026.08</time>
+              </p>
+              <div class="experience-content">
+                <h3 class="experience-name">다섯달란트</h3>
+                <ul class="experience-desc experience-list">
+                  <li>HTML, CSS, JavaScript, jQuery를 활용한 반응형 웹사이트 및 모바일 앱 UI 퍼블리싱</li>
+                  <li>기존 웹사이트 수정 및 유지보수</li>
+                  <li>GSAP, Canvas를 활용한 스크롤 인터랙션 구현</li>
+                  <li>Git을 활용한 협업 및 Thymeleaf 템플릿과 일부 Java 코드 수정</li>
+                </ul>
+              </div>
+            </li>
+            <li class="experience-item">
+              <p class="experience-date">
+                <time datetime="2025-05">2025.05</time> – <time datetime="2025-11">2025.11</time>
+              </p>
+              <div class="experience-content">
+                <h3 class="experience-name">연희직업전문학교</h3>
+                <ul class="experience-desc experience-list">
+                  <li>웹 퍼블리셔 과정에서 디자인 및 프론트엔드 개발 역량 학습</li>
+                  <li>Photoshop과 Figma를 활용한 UI/UX 디자인</li>
+                  <li>HTML, CSS 기반의 웹 구조 설계 및 JavaScript, jQuery를 활용한 동적 인터랙션 구현</li>
+                  <li>실무 중심 프로젝트를 통한 웹 서비스 이해 및 실전 역량 강화</li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section class="contact" id="contact">
+        <div class="contact-inner">
+          <p class="contact-title">Contact</p>
+          <div class="contact-content">
+            <p class="contact-sub">같이 일하고 싶으시다면 언제든지 연락주세요.</p>
+            <div class="contact-links">
+              <a class="contact-link" href="tel:010-2488-7314">
+                <span class="contact-link-label"> Phone </span>
+                <span class="contact-link-value"> 010-2488-7314 </span>
+                <span class="contact-arrow"> ↗ </span>
+              </a>
+              <a class="contact-link" href="mailto:aokm1203@naver.com">
+                <span class="contact-link-label"> Email </span>
+                <span class="contact-link-value"> aokm1203@naver.com </span>
+                <span class="contact-arrow"> ↗ </span>
+              </a>
+              <a
+                class="contact-link"
+                href="https://github.com/okm06"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="contact-link-label"> GitHub </span>
+                <span class="contact-link-value"> https://github.com/okm06 </span>
+                <span class="contact-arrow"> ↗ </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <p class="contact-footer">
+          © <span id="copyright-year">2026</span> 오경민. All rights reserved.
+        </p>
+      </section>
+    </main>
+    <script defer src="./src/assets/vendor/gsap.min.js"></script>
+    <script defer src="./src/assets/vendor/ScrollTrigger.min.js"></script>
+    <script defer src="./src/assets/vendor/lenis.min.js"></script>
+    <script defer src="./src/main.js"></script>
   </body>
 </html>

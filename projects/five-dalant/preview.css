@@ -1,0 +1,31 @@
+.portfolio-demo-note {
+  position: fixed;
+  z-index: 10000;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0.8rem 1rem;
+  border: 1px solid #deddd8;
+  border-radius: 10px;
+  background: #faf9f6;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  color: #242622;
+  font-family: sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.portfolio-demo-note p {
+  margin: 0;
+}
+
+.portfolio-demo-note a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #242622;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

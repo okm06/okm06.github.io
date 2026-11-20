@@ -1,0 +1,1081 @@
+@charset "utf-8";
+/*=====================================================================
+   문의하기 페이지 전용 스타일
+   - portfolio.css 와 같은 규칙으로 짠다. 메인(common.css)의 다크 톤·컬러
+     변수·폰트를 그대로 잇되, 풀스크린 핀 고정 연출은 쓰지 않는다.
+   - 헤더/푸터는 공통 영역이라 여기엔 없다.
+     그래서 .ct_hero 위쪽에 나중에 들어올 고정 헤더 자리를 --header-h 로 비워둔다.
+   - 클래스는 전부 .ct_ 로 시작해 메인의 .contact / .q_contact 계열과 겹치지 않게 격리한다.
+     (common.css 에 이미 .contact 가 있어서 프리픽스가 없으면 바로 충돌한다)
+=====================================================================*/
+
+/* 페이지 최상위 래퍼. 이 블록만 통째로 가져다 쓰면 된다 */
+.ct {
+  /* ★ 나중에 붙일 고정 헤더의 높이. 지금은 헤더가 없어 0.
+     헤더(common.css 기준 100px)를 붙일 때 이 값만 바꾸면
+     히어로 제목이 헤더 밑으로 숨지 않는다. portfolio.css 와 같은 방식 */
+  --header-h: 0px;
+  /* 폼 요소들이 공유하는 값. 한 곳만 고치면 입력칸·칩·버튼이 같이 따라온다 */
+  --ct-radius: 12px;
+  --ct-field-bg: rgba(255, 255, 255, 0.04);
+  --ct-field-line: rgba(255, 255, 255, 0.14);
+  --ct-danger: #ff5c5c;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+}
+
+/*=============
+   ct_hero : 페이지 상단 타이틀 + 인트로 (영상 배너)
+   - 포트폴리오 히어로와 같은 연출. 배경 영상이 배너 안에만 갇혀 재생되고
+     아래쪽에서 검정으로 페이드되어 본문으로 이어진다.
+=============*/
+.ct_hero {
+  position: relative; /* 배경 영상/페이드의 기준 */
+  overflow: hidden; /* 영상이 배너 밖으로 삐져나오지 않게 */
+  min-height: clamp(420px, 58vh, 640px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--header-h) + clamp(90px, 12vh, 150px)) 0 clamp(56px, 7vw, 96px);
+  text-align: center;
+}
+.ct_hero_video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000; /* 영상 로드 전 여백을 페이지 배경과 같은 검정으로 */
+  pointer-events: none;
+}
+.ct_hero_video video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  opacity: 0.9;
+}
+/* 한 장으로 두 가지를 처리한다.
+   ① 위쪽을 살짝 어둡게 깔아 흰 제목 가독성 확보
+   ② 아래로 갈수록 완전한 검정(--bg)이 되어 본문 배경으로 이음매 없이 녹아든다 */
+.ct_hero_video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.4) 35%,
+    rgba(0, 0, 0, 0.85) 78%,
+    #000 100%
+  );
+}
+/* 제목 묶음을 영상 위로 올린다 */
+.ct_hero .wrap {
+  position: relative;
+  z-index: 1;
+}
+.ct_hero small {
+  display: inline-block;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--point);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.ct_hero h1 {
+  font-weight: 800;
+  font-size: clamp(42px, 8vw, 110px);
+  line-height: 1.05;
+  letter-spacing: -3px;
+}
+.ct_hero h1 span {
+  color: var(--point);
+}
+.ct_hero p {
+  font-size: clamp(16px, 1.8vw, 22px);
+  color: var(--mut);
+  line-height: 1.75;
+  margin: 26px auto 0;
+  max-width: 52ch;
+}
+.ct_hero_btns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 38px;
+}
+
+/*=============
+   공용 버튼 : 히어로와 오른쪽 사이드에서 같이 쓴다
+=============*/
+.ct_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  padding: 0 32px;
+  border-radius: 100px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+.ct_btn_point {
+  background: var(--point);
+  color: #fff;
+  border: 1px solid var(--point);
+}
+.ct_btn_ghost {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+@media (hover: hover) {
+  .ct_btn:hover {
+    transform: translateY(-2px);
+  }
+  .ct_btn_point:hover {
+    background: #2b56e0;
+    border-color: #2b56e0;
+  }
+  .ct_btn_ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+  }
+}
+
+/*=============
+   섹션 머리말 (Process · FAQ · 폼 위에서 공통으로 쓴다)
+=============*/
+.ct_head {
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+.ct_head_center {
+  text-align: center;
+}
+.ct_head small {
+  display: inline-block;
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--point);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.ct_head h2 {
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.25;
+}
+.ct_head p {
+  margin-top: 14px;
+  font-size: clamp(15px, 1.5vw, 18px);
+  color: var(--mut);
+  line-height: 1.7;
+}
+.ct_head p em {
+  font-style: normal;
+  color: var(--point);
+}
+
+/*=============
+   ct_body : 왼쪽 폼 + 오른쪽 연락처
+   - 데스크탑은 2단, 1100 이하에서 1단으로 접힌다.
+=============*/
+.ct_body {
+  padding: clamp(60px, 8vw, 120px) 0 clamp(60px, 8vw, 110px);
+}
+.ct_grid {
+  display: grid;
+  /* 폼이 남는 폭을 다 가져가고 연락처는 380px 고정.
+     minmax(0, 1fr) 이라야 긴 입력값이 칸을 밀어내지 않는다 */
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: clamp(32px, 4vw, 72px);
+  max-width: 1400px;
+  /* ★ align-items: start 를 주면 안 된다.
+     그러면 오른쪽 <aside> 가 카드 높이만큼만 잡혀서, 그 안의 sticky 가
+     움직일 공간이 사라진다(= 안 따라온다). 기본값 stretch 로 둬야
+     aside 가 왼쪽 폼 높이만큼 늘어나고 그 안에서 카드가 미끄러진다 */
+}
+
+/*--- 오른쪽 사이드 : 폼이 길어서 스크롤을 따라오게 sticky ---*/
+.ct_side_inner {
+  position: sticky;
+  /* 헤더가 붙으면 그 아래에 걸리도록 --header-h 를 더해둔다 */
+  top: calc(var(--header-h) + 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ct_card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: clamp(24px, 2.5vw, 34px);
+}
+.ct_card > strong {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+}
+.ct_card_point {
+  /* 포인트색을 아주 옅게 깔아 "행동을 유도하는 카드"로 구분한다 */
+  background: linear-gradient(160deg, rgba(54, 101, 255, 0.16), rgba(54, 101, 255, 0.03));
+  border-color: rgba(54, 101, 255, 0.35);
+}
+.ct_card_point > p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mut);
+  margin: -8px 0 22px;
+}
+.ct_side_btns {
+  display: flex;
+  gap: 10px;
+}
+.ct_side_btns .ct_btn {
+  flex: 1;
+  height: 48px;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+/*--- 연락처 목록 : 라벨 폭을 맞춰 값들이 세로로 정렬되게 ---*/
+.ct_info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.ct_info li {
+  display: flex;
+  gap: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.ct_info li p {
+  flex: 0 0 74px; /* 라벨 폭을 고정해 값들이 세로로 정렬되게 */
+  color: var(--mut2);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.ct_info li a,
+.ct_info li span {
+  color: var(--fg);
+  flex: 1;
+}
+.ct_info li a {
+  transition: color 0.25s ease;
+}
+@media (hover: hover) {
+  .ct_info li a:hover {
+    color: var(--point);
+  }
+}
+
+/*=============
+   폼
+=============*/
+.ct_form_col .ct_head {
+  margin-bottom: clamp(28px, 3vw, 40px);
+}
+.ct_form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+/* 두 칸을 나란히. 좁아지면 아래 미디어쿼리에서 한 줄씩으로 푼다 */
+.ct_row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ct_field {
+  position: relative;
+  min-width: 0; /* grid 안에서 입력칸이 칸 폭을 밀어내지 않게 */
+}
+/* :not(.ct_drop) — 첨부 드롭존도 .ct_field 의 직계 label 이라 이 규칙에 걸린다.
+   그런데 이쪽이 특이도가 더 높아서(.ct_field > label = 0,1,1 / .ct_drop = 0,1,0)
+   드롭존의 display:flex 를 block 으로 덮어버린다. 그러면 안내 두 줄이 한 줄로 붙는다.
+   드롭존은 항목 이름표가 아니라 입력칸 자체이므로 여기서 빼는 게 맞다 */
+.ct_field > label:not(.ct_drop),
+.ct_label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  margin-bottom: 10px;
+}
+.ct_field > label em,
+.ct_label em,
+.ct_check p em {
+  font-style: normal;
+  color: var(--point);
+  margin-left: 2px;
+}
+/* "중복 선택 가능" 같은 보조 안내 */
+.ct_label i {
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mut2);
+  margin-left: 6px;
+}
+
+/*--- 입력칸 공통 ---*/
+.ct_form input[type="text"],
+.ct_form input[type="tel"],
+.ct_form input[type="email"],
+.ct_form select,
+.ct_form textarea {
+  width: 100%;
+  background: var(--ct-field-bg);
+  border: 1px solid var(--ct-field-line);
+  border-radius: var(--ct-radius);
+  color: var(--fg);
+  font-size: 16px;
+  padding: 0 18px;
+  height: 56px;
+  line-height: 54px; /* height - 상하 보더. 세로 가운데 정렬 */
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.ct_form textarea {
+  height: auto;
+  line-height: 1.7;
+  padding: 16px 18px;
+  resize: none;
+}
+.ct_form input::placeholder,
+.ct_form textarea::placeholder {
+  color: #6a6a6a;
+}
+.ct_form input:focus,
+.ct_form select:focus,
+.ct_form textarea:focus {
+  border-color: var(--point);
+  background: rgba(54, 101, 255, 0.07);
+  box-shadow: 0 0 0 3px rgba(54, 101, 255, 0.18); /* 포커스 링 : 키보드 사용자에게 위치를 알려준다 */
+}
+/* 자동완성이 채우면 크롬이 흰 배경을 강제로 칠한다.
+   background-color 는 못 막으니 큰 inset 그림자로 덮고 글자색만 되돌린다 */
+.ct_form input:-webkit-autofill,
+.ct_form input:-webkit-autofill:hover,
+.ct_form input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--fg);
+  -webkit-box-shadow: 0 0 0 1000px #0c0c0c inset;
+  caret-color: var(--fg);
+}
+
+/*--- select : 기본 화살표가 지워졌으니(reset.css) 직접 그린다 ---*/
+.ct_field_select {
+  position: relative;
+}
+.ct_field_select::after {
+  content: "";
+  position: absolute;
+  right: 20px;
+  /* 위(top)에서 재면 라벨 글꼴에 따라 어긋난다. 오류문구(.ct_err)는 평소 display:none 이라
+     .ct_field 의 아래끝 = select 의 아래끝. 그래서 아래에서 재면 항상 select 세로 가운데다.
+     28px = select 높이(56px)의 절반, -4px = 화살표 상자(8px)의 절반 */
+  bottom: 24px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--mut);
+  border-bottom: 2px solid var(--mut);
+  transform: rotate(45deg);
+  pointer-events: none; /* 화살표를 눌러도 select 가 열리게 */
+}
+/* 아직 고르지 않은 상태는 placeholder 처럼 흐리게.
+   value 가 빈 문자열인 hidden 옵션이 선택돼 있으면 :invalid 가 걸린다 */
+.ct_form select:invalid {
+  color: #6a6a6a;
+}
+.ct_form select option {
+  background: #111;
+  color: var(--fg);
+}
+
+/*--- 서비스 칩 : 체크박스를 숨기고 label 을 알약처럼 보이게 ---*/
+.ct_chips_set {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.ct_chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ct_chip input {
+  /* 화면에서만 감춘다. display:none 이면 키보드 포커스가 안 잡혀 접근성이 깨진다 */
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.ct_chip span {
+  display: inline-flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 20px;
+  border: 1px solid var(--ct-field-line);
+  border-radius: 100px;
+  background: var(--ct-field-bg);
+  color: var(--mut);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+@media (hover: hover) {
+  .ct_chip:hover span {
+    border-color: rgba(255, 255, 255, 0.32);
+    color: var(--fg);
+  }
+}
+.ct_chip input:checked + span {
+  background: var(--point);
+  border-color: var(--point);
+  color: #fff;
+  font-weight: 600;
+}
+.ct_chip input:focus-visible + span {
+  box-shadow: 0 0 0 3px rgba(54, 101, 255, 0.35);
+}
+
+/*--- textarea 글자 수 ---*/
+.ct_count {
+  display: block;
+  text-align: right;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--mut2);
+}
+.ct_count b {
+  font-weight: 600;
+  color: var(--mut);
+}
+
+/*--- 첨부파일 : 진짜 input 은 숨기고 label 을 드롭존으로 쓴다 ---*/
+/* 칩 체크박스와 같은 이유로 display:none 이 아니라 화면에서만 감춘다.
+   (display:none 이면 키보드 포커스가 안 잡히고, 유효성 포커스 이동도 막힌다) */
+.ct_file_field input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.ct_drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 30px 24px;
+  border: 1px dashed var(--ct-field-line);
+  border-radius: var(--ct-radius);
+  background: var(--ct-field-bg);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+/* 자식 위를 지나갈 때마다 dragleave 가 튀어 드롭존이 깜빡이는 걸 막는다.
+   (어차피 눌러야 할 대상은 label 자신이라 자식은 마우스를 받을 필요가 없다) */
+.ct_drop > * {
+  pointer-events: none;
+}
+.ct_drop b {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.2px;
+}
+.ct_drop b u {
+  color: var(--point);
+  text-underline-offset: 3px;
+}
+.ct_drop small {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mut2);
+}
+@media (hover: hover) {
+  .ct_drop:hover {
+    border-color: rgba(54, 101, 255, 0.55);
+    background: rgba(54, 101, 255, 0.06);
+  }
+}
+/* 파일을 끌고 들어온 동안. contact.js 가 .drag 를 붙였다 뗀다 */
+.ct_drop.drag {
+  border-color: var(--point);
+  border-style: solid;
+  background: rgba(54, 101, 255, 0.1);
+}
+/* 키보드로 파일 input 에 포커스가 오면 드롭존에 포커스 링을 보여준다 */
+.ct_file_field input[type="file"]:focus-visible + .ct_drop {
+  border-color: var(--point);
+  box-shadow: 0 0 0 3px rgba(54, 101, 255, 0.35);
+}
+
+/*--- 고른 파일 목록 ---*/
+.ct_files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+/* 파일이 하나도 없으면 위쪽 여백까지 통째로 없앤다 */
+.ct_files:empty {
+  display: none;
+}
+.ct_files li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px 14px;
+  background: var(--ct-field-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+/* 확장자 배지 */
+.ct_files li b {
+  flex: 0 0 auto;
+  min-width: 44px;
+  padding: 0 8px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(54, 101, 255, 0.18);
+  color: #a9bcff;
+  font-family: "Poppins", "Pretendard";
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+/* 파일명 : 길면 말줄임. min-width:0 이 없으면 flex 안에서 줄임표가 안 먹는다 */
+.ct_files li p {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ct_files li span {
+  flex: 0 0 auto;
+  font-size: 13px;
+  color: var(--mut2);
+}
+/* 삭제 버튼 : 가운데 × 를 막대 두 개로 그린다 */
+.ct_files li button {
+  position: relative;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.25s ease;
+}
+.ct_files li button::before,
+.ct_files li button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 11px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: var(--mut);
+  transition: background 0.25s ease;
+}
+.ct_files li button::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.ct_files li button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+@media (hover: hover) {
+  .ct_files li button:hover {
+    background: rgba(255, 92, 92, 0.18);
+  }
+  .ct_files li button:hover::before,
+  .ct_files li button:hover::after {
+    background: var(--ct-danger);
+  }
+}
+.ct_files li button:focus-visible {
+  box-shadow: 0 0 0 3px rgba(54, 101, 255, 0.35);
+}
+
+/*--- 개인정보 동의 : 메인 빠른상담(.q_contact)과 같은 커스텀 체크박스 구조 ---*/
+.ct_agree {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.ct_check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+/* 네이티브 input 은 화면에서만 숨기고(접근성 위해 지우지 않음),
+   바로 뒤 <span> 을 커스텀 박스로 그린 뒤 :checked + span 으로 상태를 받는다 */
+.ct_check input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.ct_check input[type="checkbox"] + span {
+  position: relative;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--ct-field-line);
+  border-radius: 5px;
+  background: var(--ct-field-bg);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+/* 체크 표시(V) : 두 변만 남긴 사각형을 45도 돌려 만든다 */
+.ct_check input[type="checkbox"] + span::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0.6);
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.ct_check input[type="checkbox"]:checked + span {
+  background: var(--point);
+  border-color: var(--point);
+}
+.ct_check input[type="checkbox"]:checked + span::after {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
+}
+.ct_check input[type="checkbox"]:focus-visible + span {
+  box-shadow: 0 0 0 3px rgba(54, 101, 255, 0.35);
+}
+.ct_check p {
+  font-size: 15px;
+  color: var(--mut);
+}
+.ct_agree_more {
+  color: var(--mut2);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.25s ease;
+}
+@media (hover: hover) {
+  .ct_agree_more:hover {
+    color: var(--fg);
+  }
+}
+/* 약관 본문 : grid-template-rows 0fr → 1fr 로 접었다 편다.
+   max-height 로 여닫으면 내용이 길어질 때 값을 다시 잡아야 하지만,
+   이 방식은 내용 높이를 브라우저가 알아서 계산해준다 */
+.ct_agree_detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+}
+.ct_agree_detail > div {
+  overflow: hidden; /* 접힌 동안 내용이 삐져나오지 않게 (이 속성이 없으면 애니메이션이 안 먹는다) */
+}
+.ct_agree_detail.open {
+  grid-template-rows: 1fr;
+}
+.ct_agree_detail p {
+  margin-top: 14px;
+  padding: 18px 20px;
+  background: var(--ct-field-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--ct-radius);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--mut);
+}
+.ct_agree_detail p b {
+  color: var(--fg);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/*--- 유효성 오류 : JS 가 .ct_field 에 .invalid 를 붙이고 .ct_err 에 문구를 넣는다 ---*/
+.ct_err {
+  display: none;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--ct-danger);
+}
+.ct_field.invalid .ct_err {
+  display: block;
+}
+.ct_field.invalid input,
+.ct_field.invalid select,
+.ct_field.invalid textarea {
+  border-color: var(--ct-danger);
+  background: rgba(255, 92, 92, 0.06);
+}
+.ct_field.invalid .ct_chip span,
+.ct_field.invalid .ct_check input[type="checkbox"] + span {
+  border-color: rgba(255, 92, 92, 0.6);
+}
+.ct_field.invalid .ct_drop {
+  border-color: rgba(255, 92, 92, 0.6);
+  background: rgba(255, 92, 92, 0.06);
+}
+/* 칩·체크박스는 선택된 것까지 빨개지면 어색하니 되돌린다 */
+.ct_field.invalid .ct_chip input:checked + span {
+  border-color: var(--point);
+}
+
+/*--- 제출 버튼 ---*/
+.ct_submit {
+  width: 100%;
+  height: 62px;
+  border-radius: var(--ct-radius);
+  background: var(--point);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  transition:
+    background 0.3s ease,
+    opacity 0.3s ease;
+}
+@media (hover: hover) {
+  .ct_submit:hover {
+    background: #2b56e0;
+  }
+}
+/* 전송 중 : 중복 제출을 막는 동안 눌린 상태처럼 보이게 */
+.ct_submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/*--- 전송 결과 안내 ---*/
+.ct_result {
+  display: none;
+  padding: 16px 20px;
+  border-radius: var(--ct-radius);
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+}
+.ct_result.show {
+  display: block;
+}
+.ct_result.ok {
+  background: rgba(54, 101, 255, 0.12);
+  border: 1px solid rgba(54, 101, 255, 0.45);
+  color: #cdd9ff;
+}
+.ct_result.fail {
+  background: rgba(255, 92, 92, 0.1);
+  border: 1px solid rgba(255, 92, 92, 0.4);
+  color: #ffc9c9;
+}
+
+/*=============
+   ct_process : 진행 단계
+   - 번호는 CSS 카운터가 센다. li 를 더하고 빼도 번호가 알아서 맞는다.
+=============*/
+.ct_process {
+  padding: clamp(70px, 9vw, 130px) 0;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.ct_steps {
+  counter-reset: ct_step;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.ct_steps li {
+  counter-increment: ct_step;
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 34px 30px 30px;
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+/* 01, 02 … 형태의 큰 번호 */
+.ct_steps li::before {
+  content: "0" counter(ct_step);
+  display: block;
+  font-family: "Poppins", "Pretendard";
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--point);
+  margin-bottom: 16px;
+}
+.ct_steps li strong {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+.ct_steps li p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--mut);
+}
+@media (hover: hover) {
+  .ct_steps li:hover {
+    border-color: rgba(54, 101, 255, 0.5);
+    transform: translateY(-4px);
+  }
+}
+
+/*=============
+   ct_faq : 아코디언
+   - 답변은 약관과 같은 grid-template-rows 0fr → 1fr 방식으로 접었다 편다.
+=============*/
+.ct_faq {
+  padding: clamp(70px, 9vw, 130px) 0 clamp(90px, 12vw, 160px);
+  border-top: 1px solid var(--line);
+}
+.ct_faq_list {
+  max-width: 900px;
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+.ct_faq_list li {
+  border-bottom: 1px solid var(--line);
+}
+.ct_faq_q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding: 28px 4px;
+  color: var(--fg);
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  line-height: 1.5;
+  text-align: left;
+  transition: color 0.25s ease;
+}
+@media (hover: hover) {
+  .ct_faq_q:hover {
+    color: var(--point);
+  }
+}
+/* +  →  ×  로 도는 아이콘. 가로/세로 막대를 가상요소로 하나씩 그린다 */
+.ct_faq_q i {
+  position: relative;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.4s ease;
+}
+.ct_faq_q i::before,
+.ct_faq_q i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: currentColor;
+  border-radius: 2px;
+}
+.ct_faq_q i::before {
+  width: 16px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+.ct_faq_q i::after {
+  width: 2px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+/* 열리면 세로 막대를 지우고 통째로 돌려 "−" 로 바꾼다 */
+.ct_faq_q.open {
+  color: var(--point);
+}
+.ct_faq_q.open i {
+  transform: rotate(180deg);
+}
+.ct_faq_q.open i::after {
+  opacity: 0;
+}
+.ct_faq_a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+}
+.ct_faq_a > div {
+  overflow: hidden; /* 이게 없으면 0fr 이어도 내용이 그대로 보인다 */
+}
+.ct_faq_a.open {
+  grid-template-rows: 1fr;
+}
+.ct_faq_a p {
+  padding: 0 4px 30px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--mut);
+}
+
+/*=============
+   반응형
+=============*/
+@media (max-width: 1100px) {
+  /* 오른쪽 연락처를 폼 아래로 내린다. sticky 도 함께 푼다
+     (1단에서 sticky 가 남아 있으면 카드가 화면에 붙어 따라다녀 거슬린다) */
+  .ct_grid {
+    grid-template-columns: 1fr;
+  }
+  .ct_side_inner {
+    position: static;
+    /* 좁아지면 두 카드를 나란히 놓아 세로 길이를 줄인다 */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .ct_steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ct_hero h1 {
+    letter-spacing: -2px;
+  }
+  .ct_hero_btns {
+    margin-top: 30px;
+  }
+  .ct_btn {
+    height: 50px;
+    padding: 0 24px;
+    font-size: 15px;
+  }
+  /* 두 칸짜리 줄을 전부 한 줄씩으로 푼다 */
+  .ct_row2 {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .ct_form {
+    gap: 20px;
+  }
+  .ct_side_inner {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .ct_chip span {
+    height: 42px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+  .ct_form input[type="text"],
+  .ct_form input[type="tel"],
+  .ct_form input[type="email"],
+  .ct_form select {
+    height: 52px;
+    line-height: 50px;
+    /* iOS 는 16px 미만 입력칸을 터치하면 화면을 확대한다. 16px 아래로 내리지 말 것 */
+    font-size: 16px;
+  }
+  /* select 높이가 52px 로 줄었으니 화살표도 26px - 4px 지점으로 */
+  .ct_field_select::after {
+    bottom: 22px;
+  }
+  /* 좁은 화면에선 드롭존 높이를 줄인다 (모바일은 드래그가 없어 안내문도 짧게) */
+  .ct_drop {
+    padding: 24px 18px;
+  }
+  .ct_drop b {
+    font-size: 14px;
+  }
+  .ct_drop small {
+    font-size: 12px;
+  }
+  .ct_files li {
+    gap: 8px;
+    padding: 9px 10px 9px 12px;
+  }
+  .ct_files li p {
+    font-size: 13px;
+  }
+  /* 파일 크기까지 넣으면 파일명이 너무 좁아진다 */
+  .ct_files li span {
+    display: none;
+  }
+  .ct_steps {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .ct_steps li {
+    padding: 26px 24px;
+  }
+  .ct_faq_q {
+    padding: 22px 2px;
+  }
+  .ct_faq_a p {
+    padding: 0 2px 24px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 500px) {
+  .ct_hero small {
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+  }
+  /* 좁은 화면에선 버튼 2개를 세로로 쌓아 폭을 꽉 채운다 */
+  .ct_hero_btns .ct_btn {
+    width: 100%;
+  }
+  .ct_side_btns {
+    flex-direction: column;
+  }
+  .ct_info li {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ct_info li p {
+    flex: none;
+  }
+}

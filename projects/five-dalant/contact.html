@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>5DALANT</title>
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- CSRF: XSRF-TOKEN 쿠키 값을 fetch 변경 요청 헤더에 자동 첨부 (문의 접수용) -->
+  
+  
+  <!-- Event snippet for Website lead conversion page -->
+  
+<link rel="stylesheet" href="preview.css" />
+</head>
+<body>
+<!----------------------------헤더시작------------------------>
+<header>
+  <div class="wrap head_wrap">
+    <a href="index.html" class="logo"><img src="assets/images/w_logo.svg" alt="로고" /></a>
+    <!-- 데스크탑에선 가로 메뉴, 768 이하에선 전체화면 오버레이로 바뀐다 (responsive.css) -->
+    <nav id="gnb">
+      <a href="index.html">다섯달란트 소개</a>
+      <a href="portfolio.html">포트폴리오</a>
+      <a href="contact.html" class="pay_contact"
+      ><img src="assets/images/pay_contact.svg" alt="" />문의하기</a
+      >
+    </nav>
+    <!-- 햄버거 : 768 이하에서만 보인다. 열림 상태는 body.menu_open 이 갖는다 -->
+    <button
+            type="button"
+            class="menu_btn"
+            aria-label="메뉴 열기"
+            aria-expanded="false"
+            aria-controls="gnb"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<!-------------------------헤더 끝------------------------->
+    <main class="ct">
+      <section class="ct_hero">
+        <div class="ct_hero_video">
+          <video
+            src="assets/images/main_video.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+          ></video>
+        </div>
+        <div class="wrap">
+          <small>Contact</small>
+          <h1>프로젝트를 <span>시작</span>해볼까요?</h1>
+          <p>
+            어떤 서비스를 만들고 싶은지 알려주세요. 영업일 기준 1일 이내에 담당자가 연락드려 방향과
+            예상 견적을 안내해 드립니다.
+          </p>
+          <div class="ct_hero_btns">
+            <a href="#ct_form" class="ct_btn ct_btn_point">문의 남기기</a>
+            <a href="tel:07075660902" class="ct_btn ct_btn_ghost">070-7566-0902</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="ct_body" id="ct_form">
+        <div class="wrap ct_grid">
+          <!--------- 왼쪽 : 문의 폼 --------->
+          <div class="ct_form_col">
+            <div class="ct_head">
+              <small>Project Inquiry</small>
+              <h2>프로젝트 문의</h2>
+              <p><em>*</em> 표시는 필수 입력 항목입니다.</p>
+            </div>
+
+            <!-- 접수는 contact.js 가 ajax(fetch)로 POST /inquiry 처리 -->
+            <form class="ct_form" id="ctForm" method="post" enctype="multipart/form-data" novalidate>
+              <!-- 허니팟 : 사람 눈에 안 보인다. 봇이 채우면 서버가 저장하지 않는다 -->
+              <input type="text" name="homepage" tabindex="-1" autocomplete="off" aria-hidden="true"
+                     style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" />
+              <!--- 이름 / 연락처 : 좁은 화면에선 한 줄씩 --->
+              <div class="ct_row2">
+                <div class="ct_field">
+                  <label for="ct_name">이름 <em>*</em></label>
+                  <input
+                    type="text"
+                    id="ct_name"
+                    name="name"
+                    placeholder="이름을 입력해 주세요"
+                    autocomplete="name"
+                    required
+                  />
+                  <p class="ct_err"></p>
+                </div>
+                <div class="ct_field">
+                  <label for="ct_tel">연락처 <em>*</em></label>
+                  <!-- inputmode=numeric : 모바일에서 숫자 키패드가 뜬다.
+                       하이픈은 contact.js 가 입력하는 대로 자동으로 넣어준다 -->
+                  <input
+                    type="tel"
+                    id="ct_tel"
+                    name="tel"
+                    placeholder="010-0000-0000"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                    maxlength="13"
+                    required
+                  />
+                  <p class="ct_err"></p>
+                </div>
+              </div>
+
+              <!--- 이메일 / 회사명 --->
+              <div class="ct_row2">
+                <div class="ct_field">
+                  <label for="ct_email">이메일 <em>*</em></label>
+                  <input
+                    type="email"
+                    id="ct_email"
+                    name="email"
+                    placeholder="example@email.com"
+                    autocomplete="email"
+                    required
+                  />
+                  <p class="ct_err"></p>
+                </div>
+                <div class="ct_field">
+                  <label for="ct_company">회사 / 브랜드명</label>
+                  <input
+                    type="text"
+                    id="ct_company"
+                    name="company"
+                    placeholder="선택 입력"
+                    autocomplete="organization"
+                  />
+                  <p class="ct_err"></p>
+                </div>
+              </div>
+              <div class="ct_field">
+                <fieldset class="ct_chips_set">
+                  <legend>문의 서비스</legend>
+                  <span class="ct_label">문의 서비스 <em>*</em> <i>중복 선택 가능</i></span>
+                  <div class="ct_chips">
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="홈페이지" />
+                      <span>홈페이지</span>
+                    </label>
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="쇼핑몰" />
+                      <span>쇼핑몰</span>
+                    </label>
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="앱·모바일" />
+                      <span>앱·모바일</span>
+                    </label>
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="UI·UX 디자인" />
+                      <span>UI·UX 디자인</span>
+                    </label>
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="브랜딩·로고" />
+                      <span>브랜딩·로고</span>
+                    </label>
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="상세페이지" />
+                      <span>상세페이지</span>
+                    </label>
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="서비스 운영·유지보수" />
+                      <span>운영·유지보수</span>
+                    </label>
+                    <label class="ct_chip">
+                      <input type="checkbox" name="services" value="ERP 등 기타" />
+                      <span>ERP 등 기타</span>
+                    </label>
+                  </div>
+                </fieldset>
+                <p class="ct_err"></p>
+              </div>
+
+              <!--- 예산 / 일정 --->
+              <div class="ct_row2">
+                <div class="ct_field ct_field_select">
+                  <label for="ct_budget">예상 예산</label>
+                  <select id="ct_budget" name="budget">
+                    <option value="" disabled selected hidden>선택해 주세요</option>
+                    <option>500만원 미만</option>
+                    <option>500 ~ 1,000만원</option>
+                    <option>1,000 ~ 3,000만원</option>
+                    <option>3,000 ~ 5,000만원</option>
+                    <option>5,000만원 이상</option>
+                    <option>협의 후 결정</option>
+                  </select>
+                  <p class="ct_err"></p>
+                </div>
+                <div class="ct_field ct_field_select">
+                  <label for="ct_schedule">희망 일정</label>
+                  <select id="ct_schedule" name="schedule">
+                    <option value="" disabled selected hidden>선택해 주세요</option>
+                    <option>최대한 빠르게</option>
+                    <option>1개월 이내</option>
+                    <option>2 ~ 3개월</option>
+                    <option>3개월 이상</option>
+                    <option>아직 미정</option>
+                  </select>
+                  <p class="ct_err"></p>
+                </div>
+              </div>
+
+              <!--- 프로젝트 내용 --->
+              <div class="ct_field">
+                <label for="ct_message">프로젝트 내용 <em>*</em></label>
+                <textarea
+                  id="ct_message"
+                  name="message"
+                  rows="7"
+                  maxlength="2000"
+                  placeholder="어떤 서비스인지, 참고할 만한 사이트나 원하는 기능이 있다면 함께 적어주세요. 자세할수록 정확한 견적을 드릴 수 있습니다."
+                  required
+                ></textarea>
+                <!-- 글자 수는 contact.js 가 채운다 -->
+                <span class="ct_count"><b>0</b> / 2000</span>
+                <p class="ct_err"></p>
+              </div>
+
+              <!--- 참고 자료 첨부 : 선택 입력.
+                    진짜 <input type="file"> 은 화면에서 숨기고 바로 아래 <label> 을
+                    드롭존처럼 보이게 한다. label[for] 이라 클릭하면 파일 창이 열리고,
+                    드래그해서 놓는 것은 contact.js 가 처리한다.
+                    고른 파일 목록(.ct_files)도 contact.js 가 그린다. --->
+              <div class="ct_field ct_file_field">
+                <span class="ct_label">참고 자료 첨부 <i>선택 · 최대 5개 · 개당 10MB</i></span>
+                <input
+                  type="file"
+                  id="ct_file"
+                  name="files"
+                  multiple
+                  accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.hwp,.hwpx,.txt,.zip,.jpg,.jpeg,.png,.gif,.webp,.svg,.ai,.psd"
+                />
+                <label class="ct_drop" for="ct_file">
+                  <b>파일을 끌어다 놓거나 <u>클릭해서 선택</u>하세요</b>
+                  <small>기획서 · 참고 이미지 · 견적 양식 등 (PDF, 문서, 이미지, ZIP)</small>
+                </label>
+                <!-- 고른 파일이 여기 쌓인다. 비어 있으면 CSS 가 통째로 숨긴다 -->
+                <ul class="ct_files"></ul>
+                <p class="ct_err"></p>
+              </div>
+
+              <!--- 개인정보 동의 : 메인 빠른상담(.q_contact)과 같은 커스텀 체크박스 구조 --->
+              <div class="ct_field ct_agree_field">
+                <div class="ct_agree">
+                  <label class="ct_check">
+                    <input type="checkbox" name="agree" value="Y" required />
+                    <span></span>
+                    <p>개인정보 수집 및 이용에 동의합니다 <em>*</em></p>
+                  </label>
+                  <button type="button" class="ct_agree_more" aria-expanded="false">
+                    자세히 보기
+                  </button>
+                </div>
+                <!-- 접혀 있는 약관 본문. 버튼이 .open 을 토글한다 -->
+                <div class="ct_agree_detail">
+                  <div>
+                    <p>
+                      <b>수집 항목</b> 이름, 연락처, 이메일, 회사명, 문의 내용, 첨부파일<br />
+                      <b>수집 목적</b> 문의 접수 및 상담 · 견적 안내<br />
+                      <b>보유 기간</b> 문의 처리 완료 후 3년 보관 뒤 파기<br />
+                      동의를 거부하실 수 있으나, 이 경우 문의 접수가 제한됩니다.
+                    </p>
+                  </div>
+                </div>
+                <p class="ct_err"></p>
+              </div>
+
+              <button type="submit" class="ct_submit">문의 보내기</button>
+
+              <!-- 전송 결과 안내. 기본은 숨김이고 JS 가 켠다 -->
+              <p class="ct_result" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <!--------- 오른쪽 : 연락처 (데스크탑에선 스크롤 따라오는 sticky) --------->
+          <aside class="ct_side">
+            <div class="ct_side_inner">
+              <div class="ct_card">
+                <strong>연락처</strong>
+                <ul class="ct_info">
+                  <li>
+                    <p>Tel</p>
+                    <a href="tel:07075660902">070-7566-0902</a>
+                  </li>
+                  <li>
+                    <p>Mail</p>
+                    <a href="mailto:support@5dalant.net">support@5dalant.net</a>
+                  </li>
+                  <li>
+                    <p>Location</p>
+                    <span>인천광역시 부평구 부평대로 제이타워 3차 1239호</span>
+                  </li>
+                  <li>
+                    <p>Hours</p>
+                    <span>평일 09:00 ~ 18:00 (점심 12:00 ~ 13:00)<br />주말 · 공휴일 휴무</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="ct_card ct_card_point">
+                <strong>바로 상담이 필요하신가요?</strong>
+                <p>전화 주시면 담당자가 바로 연결됩니다. 통화가 어려우시면 메일도 좋습니다.</p>
+                <div class="ct_side_btns">
+                  <a href="tel:07075660902" class="ct_btn ct_btn_point">전화 문의</a>
+                  <a href="mailto:support@5dalant.net" class="ct_btn ct_btn_ghost">메일 문의</a>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="ct_process">
+        <div class="wrap">
+          <div class="ct_head ct_head_center">
+            <small>Process</small>
+            <h2>문의 후 이렇게 진행됩니다</h2>
+            <p>문의를 남기신 순간부터 오픈까지, 어느 단계에 있는지 항상 공유드립니다.</p>
+          </div>
+          <ol class="ct_steps">
+            <li>
+              <strong>문의 접수</strong>
+              <p>남겨주신 내용을 확인하고 영업일 기준 1일 이내에 연락드립니다.</p>
+            </li>
+            <li>
+              <strong>상담 · 요구사항 정리</strong>
+              <p>목표와 필요한 기능, 일정과 예산을 함께 구체화합니다.</p>
+            </li>
+            <li>
+              <strong>견적 · 계약</strong>
+              <p>범위와 일정이 담긴 제안서와 견적서를 드리고 계약을 진행합니다.</p>
+            </li>
+            <li>
+              <strong>기획 · 디자인</strong>
+              <p>화면 설계와 디자인 시안을 만들고 피드백을 반영해 확정합니다.</p>
+            </li>
+            <li>
+              <strong>개발 · 검수</strong>
+              <p>개발과 테스트를 거쳐 실제 환경에서 함께 확인합니다.</p>
+            </li>
+            <li>
+              <strong>오픈 · 운영</strong>
+              <p>오픈 후에도 유지보수와 개선을 이어서 지원합니다.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="ct_faq">
+        <div class="wrap">
+          <div class="ct_head ct_head_center">
+            <small>FAQ</small>
+            <h2>자주 묻는 질문</h2>
+            <p>문의 전에 많이 물어보시는 내용을 모았습니다.</p>
+          </div>
+          <ul class="ct_faq_list">
+            <li>
+              <button type="button" class="ct_faq_q" aria-expanded="false">
+                제작 기간은 보통 얼마나 걸리나요?
+                <i aria-hidden="true"></i>
+              </button>
+              <div class="ct_faq_a">
+                <div>
+                  <p>
+                    범위에 따라 다르지만 일반적인 반응형 홈페이지는 4~6주, 쇼핑몰은 6~8주, 앱
+                    서비스는 8주 이상 소요됩니다. 정확한 일정은 요구사항을 정리한 뒤 제안서에 담아
+                    드립니다.
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <button type="button" class="ct_faq_q" aria-expanded="false">
+                견적은 어떻게 산정되나요?
+                <i aria-hidden="true"></i>
+              </button>
+              <div class="ct_faq_a">
+                <div>
+                  <p>
+                    페이지 수, 필요한 기능, 디자인 작업량, 운영 지원 여부를 기준으로 산정합니다.
+                    문의 시 예산 범위를 알려주시면 그 안에서 가능한 구성을 먼저 제안해 드립니다.
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <button type="button" class="ct_faq_q" aria-expanded="false">
+                기존에 만든 사이트도 수정이나 리뉴얼이 가능한가요?
+                <i aria-hidden="true"></i>
+              </button>
+              <div class="ct_faq_a">
+                <div>
+                  <p>
+                    가능합니다. 현재 사이트의 구조와 소스를 확인한 뒤 부분 개선이 나은지 전체
+                    리뉴얼이 나은지 솔직하게 말씀드립니다. 사용 중인 URL 을 함께 남겨주세요.
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <button type="button" class="ct_faq_q" aria-expanded="false">
+                오픈 후 유지보수도 맡길 수 있나요?
+                <i aria-hidden="true"></i>
+              </button>
+              <div class="ct_faq_a">
+                <div>
+                  <p>
+                    네. 오픈 후 일정 기간은 무상 하자보수로 대응하고, 이후에는 월 단위 운영 계약으로
+                    콘텐츠 수정과 기능 개선을 이어서 지원합니다.
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <button type="button" class="ct_faq_q" aria-expanded="false">
+                정부지원사업으로도 제작할 수 있나요?
+                <i aria-hidden="true"></i>
+              </button>
+              <div class="ct_faq_a">
+                <div>
+                  <p>
+                    가능합니다. 창업 기업 대상 지원사업 수행 경험이 있어 필요한 산출물과 증빙 양식에
+                    맞춰 진행해 드립니다. 문의 시 사업명을 함께 알려주세요.
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <!--정부지원사업 끝-->
+    <footer>
+      <div class="wrap">
+        <div class="left">
+          <div class="row">
+            <a href="#none">회사소개</a>
+            <a href="contact.html">문의하기</a>
+          </div>
+          <ul class="address">
+            <li>
+              <p>주소</p>
+              <a href="#none" style="cursor: auto"
+              >인천광역시 부평구 부평대로 제이타워 3차 1239호 다섯달란트</a
+              >
+            </li>
+            <li>
+              <p>전화</p>
+              <a href="tel:07075660902">070-7566-0902</a>
+            </li>
+            <li>
+              <p>이메일</p>
+              <a href="mailto:support@5dalant.net">support@5dalant.net</a>
+            </li>
+          </ul>
+        </div>
+        <div class="right">
+          <img src="assets/images/w_logo.svg" alt="" class="f_logo" />
+          <p>© 2026 5DALANT Co. all rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- 맨 위로 : 화면 오른쪽 아래 고정. 조금 내려가야 나타난다 (JS 가 .show 를 붙인다) -->
+    <button type="button" class="to_top to_top_bottom0" aria-label="맨 위로">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+                d="M12 19V5M12 5l-7 7M12 5l7 7"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- common.js 가 먼저다. registerPlugin·스크롤 진행 바·헤더 같은 공통 동작이 여기 있고,
+         contact.js 는 그걸 전제로 문의 페이지 것만 담고 있다 -->
+    <script src="assets/js/common.js"></script>
+    <!--contact에서만-->
+    <script src="assets/js/contact.js"></script>
+  
+<aside class="portfolio-demo-note" aria-label="퍼블리싱 데모 안내">
+  <p>포트폴리오용 퍼블리싱 데모입니다. 문의는 실제로 접수되지 않습니다.</p>
+  <a href="../../index.html#projects">포트폴리오로 돌아가기 ↗</a>
+</aside>
+</body>
+</html>
