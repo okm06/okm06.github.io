@@ -41,6 +41,47 @@ mobileMenu.addEventListener('change', () => setMenu(false));
 setMenu(false);
 document.documentElement.classList.add('has-js');
 
+// 긴 섹션에서도 현재 위치를 유지하며, 첫 화면에서는 메뉴를 선택하지 않습니다.
+const sectionLinks = [...navLinks.querySelectorAll('a[href^="#"]')].map((link) => ({
+  link,
+  section: document.getElementById(link.getAttribute('href').slice(1)),
+})).filter(({ section }) => section);
+let activeSectionLink = null;
+let sectionUpdatePending = false;
+
+function updateActiveSection() {
+  const activationLine = Math.min(window.innerHeight * 0.3, nav.getBoundingClientRect().height + 96);
+  let current = null;
+  sectionLinks.forEach(({ link, section }) => {
+    if (section.getBoundingClientRect().top <= activationLine) current = link;
+  });
+  const pageBottom = document.documentElement.scrollHeight - window.innerHeight;
+  if (pageBottom > 0 && window.scrollY >= pageBottom - 4) {
+    current = sectionLinks.at(-1)?.link ?? null;
+  }
+  if (current === activeSectionLink) return;
+  sectionLinks.forEach(({ link }) => {
+    if (link === current) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+  activeSectionLink = current;
+}
+
+function scheduleSectionUpdate() {
+  if (sectionUpdatePending) return;
+  sectionUpdatePending = true;
+  window.requestAnimationFrame(() => {
+    sectionUpdatePending = false;
+    updateActiveSection();
+  });
+}
+
+window.addEventListener('scroll', scheduleSectionUpdate, { passive: true });
+window.addEventListener('resize', scheduleSectionUpdate);
+window.addEventListener('hashchange', scheduleSectionUpdate);
+window.addEventListener('load', scheduleSectionUpdate);
+scheduleSectionUpdate();
+
 // 접힌 상태의 높이만 맞추므로 펼친 카드가 옆 카드를 늘리지 않습니다.
 const projectGrid = document.querySelector('.projects-grid');
 const projectCards = [...projectGrid.querySelectorAll('.project-item')];
@@ -65,6 +106,7 @@ function alignProjectCards() {
 
 function refreshScrollPositions() {
   window.ScrollTrigger?.refresh();
+  scheduleSectionUpdate();
 }
 
 projectGrid.querySelectorAll('.project-details').forEach((details) => {

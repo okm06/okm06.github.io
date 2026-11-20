@@ -7,6 +7,18 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  isolation: isolate;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 55% at 74% 40%, rgba(170, 190, 160, 0.3), transparent 75%),
+    radial-gradient(ellipse 40% 35% at 15% 70%, rgba(210, 220, 196, 0.25), transparent 75%);
 }
 
 .hero-inner {

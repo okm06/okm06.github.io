@@ -26,11 +26,35 @@
 }
 
 .nav-links a {
+  position: relative;
+  display: inline-flex;
   font-size: 0.8rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-secondary);
   transition: color 0.2s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.45rem;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.nav-links a[aria-current="location"] {
+  color: var(--accent);
+}
+
+.nav-links a[aria-current="location"]::after {
+  transform: scaleX(1);
 }
 
 .nav-links a:hover {
@@ -124,6 +148,12 @@
     min-height: 44px;
     padding: 0.5rem 1rem;
     font-size: 1.1rem;
+  }
+
+  .nav-links a::after {
+    right: 1rem;
+    bottom: 0.2rem;
+    left: 1rem;
   }
 
   .nav--open .nav-links {
