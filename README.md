@@ -41,4 +41,6 @@ GitHub 저장소 `okm06/okm06.github.io`의 `main` 브랜치 루트를 GitHub Pa
 
 ## 이미지 출처
 
+- `src/assets/icons/gsap.svg`: [Simple Icons의 GSAP 아이콘](https://github.com/simple-icons/simple-icons/blob/develop/icons/gsap.svg).
+- `src/assets/icons/canvas.svg`: Canvas의 그래픽 그리기를 표현한 자체 제작 SVG 아이콘.
 - `src/assets/icons/thymeleaf.png`: [The Thymeleaf Project 공식 로고](https://www.thymeleaf.org/download.html), [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). 원본 로고를 변경 없이 사용합니다.

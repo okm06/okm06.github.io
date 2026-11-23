@@ -16,7 +16,7 @@
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
@@ -47,11 +47,6 @@
 .skill-card--design {
   --category-bg: #ede7e4;
   --category-text: #765f53;
-}
-
-.skill-card--backend {
-  --category-bg: #e5ebef;
-  --category-text: #536576;
 }
 
 .skill-card--tools {
@@ -156,19 +151,6 @@
   font-size: 0.6rem;
 }
 
-.skill-item .skill-text-icon {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 4px;
-  background: var(--category-bg);
-  color: var(--category-text);
-  font-size: 0.6rem;
-  font-weight: 700;
-}
-
 .skill-experience {
   display: grid;
   gap: 0.9rem;
@@ -191,7 +173,7 @@
   color: var(--text-secondary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .skills {
     padding: 6rem 6vw;
   }
